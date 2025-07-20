@@ -1,0 +1,160 @@
+TITLE: Restaurant Preference Persona LPA
+
+DATA: FILE IS "H:\kng9\mplus\final\lca_data.csv";
+
+! two step method
+VARIABLE: 
+    NAMES ARE id ff price rating div tt r_nonr mode purp tod
+    empl med_inc home fd kids veh_hh age_1 age_2 age_3 age_4 age_5
+    male fem gend_oth white asian hispanic black race_oth
+    inc_1 inc_2 inc_3 inc_4 fulltm parttm homem unemp;
+
+    USEVARIABLES ARE ff price rating div tt r_nonr mode purp tod
+    empl med_inc home fd kids veh_hh
+    age_1 age_2 age_3 age_4
+    fem !male
+    white asian hispanic black
+    inc_1 inc_2 inc_3
+    fulltm parttm homem;
+
+    CLASSES = c(4);
+    NOMINAL = mode purp tod;
+    !CATEGORICAL = fd age_1 age_2 age_3 age_4 
+    !white asian hispanic black inc_1 inc_2 inc_3;
+
+DEFINE:
+    empl = empl/1000;
+    med_inc = med_inc/1000;
+    tt = tt/10;
+
+ANALYSIS: TYPE = MIXTURE;
+    ESTIMATOR = MLR;
+    ALGO = INT;
+    STARTS = 400 100;
+
+MODEL:
+         %OVERALL%
+           ! covariates
+        c ON empl med_inc home fd kids veh_hh
+        age_1 age_2 age_3 age_4
+        fem !male
+        white asian hispanic black
+        inc_1 inc_2 inc_3 fulltm parttm homem;
+
+       [ c#1*1.84338 ];
+       [ c#2*3.33147 ];
+       [ c#3*2.05063 ];
+
+       %C#1%
+
+       [ ff*0.49917 ];
+       [ price*1.43811 ];
+       [ rating*3.15706 ];
+       [ div*2.34588 ];
+       [ tt*1.40254 ];
+       [ r_nonr*0.53293 ];
+       [ mode#1*-0.29018 ];
+       [ mode#2*-0.20906 ];
+       [ mode#3*-2.31814 ];
+       [ purp#1*-0.41789 ];
+       [ purp#2*1.40403 ];
+       [ purp#3*0.51245 ];
+       [ purp#4*1.12373 ];
+       [ tod#1*-1.62864 ];
+       [ tod#2*0.41630 ];
+       [ tod#3*0.34241 ];
+
+       ff*0.00145 (7);
+       price*0.14711 (8);
+       rating*0.20665 (9);
+       div*1.98974 (10);
+       tt*0.75706 (11);
+       r_nonr*0.34558 (12);
+
+       %C#2%
+
+       [ ff*0.00474 ];
+       [ price*1.82320 ];
+       [ rating*3.79216 ];
+       [ div*2.76341 ];
+       [ tt*1.35594 ];
+       [ r_nonr*0.52227 ];
+       [ mode#1*-0.25910 ];
+       [ mode#2*0.36245 ];
+       [ mode#3*-2.03583 ];
+       [ purp#1*-0.53322 ];
+       [ purp#2*1.57937 ];
+       [ purp#3*0.12575 ];
+       [ purp#4*1.08444 ];
+       [ tod#1*-1.53541 ];
+       [ tod#2*0.26315 ];
+       [ tod#3*0.08458 ];
+
+       ff*0.00145 (7);
+       price*0.14711 (8);
+       rating*0.20665 (9);
+       div*1.98974 (10);
+       tt*0.75706 (11);
+       r_nonr*0.34558 (12);
+
+       %C#3%
+
+       [ ff*0.22274 ];
+       [ price*1.69576 ];
+       [ rating*3.63679 ];
+       [ div*4.18412 ];
+       [ tt*1.17607 ];
+       [ r_nonr*0.51055 ];
+       [ mode#1*-0.52314 ];
+       [ mode#2*-0.05394 ];
+       [ mode#3*-2.49589 ];
+       [ purp#1*-1.14329 ];
+       [ purp#2*1.53604 ];
+       [ purp#3*-0.02913 ];
+       [ purp#4*0.76535 ];
+       [ tod#1*-1.94454 ];
+       [ tod#2*0.22996 ];
+       [ tod#3*0.02381 ];
+
+       ff*0.00145 (7);
+       price*0.14711 (8);
+       rating*0.20665 (9);
+       div*1.98974 (10);
+       tt*0.75706 (11);
+       r_nonr*0.34558 (12);
+
+       %C#4%
+
+       [ ff*0.99611 ];
+       [ price*1.14365 ];
+       [ rating*2.49081 ];
+       [ div*1.18473 ];
+       [ tt*1.52301 ];
+       [ r_nonr*0.79385 ];
+       [ mode#1*-0.28203 ];
+       [ mode#2*0.05797 ];
+       [ mode#3*-1.81521 ];
+       [ purp#1*-1.50408 ];
+       [ purp#2*1.13031 ];
+       [ purp#3*0.12822 ];
+       [ purp#4*0.98232 ];
+       [ tod#1*-1.51718 ];
+       [ tod#2*0.33723 ];
+       [ tod#3*0.32922 ];
+
+       ff*0.00145 (7);
+       price*0.14711 (8);
+       rating*0.20665 (9);
+       div*1.98974 (10);
+       tt*0.75706 (11);
+       r_nonr*0.34558 (12);
+
+
+OUTPUT: TECH7 !TECH11 !TECH14 !TECH1;
+
+PLOT: TYPE = PLOT3;
+    SERIES = ff(1) price(2) rating(3) div(4) tt(5) r_nonr(6);
+
+SAVEDATA: FILE = 4_class_probabilities.dat;
+            SAVE = CPROBABILITIES;
+

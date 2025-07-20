@@ -1,0 +1,2278 @@
+Mplus VERSION 8.11
+MUTHEN & MUTHEN
+07/10/2024   3:12 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE: Restaurant Preference Persona LPA
+
+  DATA: FILE IS "H:\kng9\mplus\final\lca_data.csv";
+
+  ! two step method
+  VARIABLE:
+      NAMES ARE id ff price rating div tt r_nonr mode purp tod
+      empl med_inc home fd kids veh_hh age_1 age_2 age_3 age_4 age_5
+      male fem gend_oth white asian hispanic black race_oth
+      inc_1 inc_2 inc_3 inc_4 fulltm parttm homem unemp;
+
+      USEVARIABLES ARE ff price rating div tt r_nonr mode purp tod
+      empl med_inc home fd kids veh_hh
+      age_1 age_2 age_3 age_4
+      fem !male
+      white asian hispanic black
+      inc_1 inc_2 inc_3
+      fulltm parttm homem;
+
+      CLASSES = c(4);
+      NOMINAL = mode purp tod;
+      !CATEGORICAL = fd age_1 age_2 age_3 age_4
+      !white asian hispanic black inc_1 inc_2 inc_3;
+
+  DEFINE:
+      empl = empl/1000;
+      med_inc = med_inc/1000;
+      tt = tt/10;
+
+  ANALYSIS: TYPE = MIXTURE;
+      ESTIMATOR = MLR;
+      ALGO = INT;
+      STARTS = 400 100;
+
+  MODEL:
+           %OVERALL%
+             ! covariates
+          c ON empl med_inc home fd kids veh_hh
+          age_1 age_2 age_3 age_4
+          fem !male
+          white asian hispanic black
+          inc_1 inc_2 inc_3 fulltm parttm homem;
+
+         [ c#1*1.84338 ];
+         [ c#2*3.33147 ];
+         [ c#3*2.05063 ];
+
+         %C#1%
+
+         [ ff*0.49917 ];
+         [ price*1.43811 ];
+         [ rating*3.15706 ];
+         [ div*2.34588 ];
+         [ tt*1.40254 ];
+         [ r_nonr*0.53293 ];
+         [ mode#1*-0.29018 ];
+         [ mode#2*-0.20906 ];
+         [ mode#3*-2.31814 ];
+         [ purp#1*-0.41789 ];
+         [ purp#2*1.40403 ];
+         [ purp#3*0.51245 ];
+         [ purp#4*1.12373 ];
+         [ tod#1*-1.62864 ];
+         [ tod#2*0.41630 ];
+         [ tod#3*0.34241 ];
+
+         ff*0.00145 (7);
+         price*0.14711 (8);
+         rating*0.20665 (9);
+         div*1.98974 (10);
+         tt*0.75706 (11);
+         r_nonr*0.34558 (12);
+
+         %C#2%
+
+         [ ff*0.00474 ];
+         [ price*1.82320 ];
+         [ rating*3.79216 ];
+         [ div*2.76341 ];
+         [ tt*1.35594 ];
+         [ r_nonr*0.52227 ];
+         [ mode#1*-0.25910 ];
+         [ mode#2*0.36245 ];
+         [ mode#3*-2.03583 ];
+         [ purp#1*-0.53322 ];
+         [ purp#2*1.57937 ];
+         [ purp#3*0.12575 ];
+         [ purp#4*1.08444 ];
+         [ tod#1*-1.53541 ];
+         [ tod#2*0.26315 ];
+         [ tod#3*0.08458 ];
+
+         ff*0.00145 (7);
+         price*0.14711 (8);
+         rating*0.20665 (9);
+         div*1.98974 (10);
+         tt*0.75706 (11);
+         r_nonr*0.34558 (12);
+
+         %C#3%
+
+         [ ff*0.22274 ];
+         [ price*1.69576 ];
+         [ rating*3.63679 ];
+         [ div*4.18412 ];
+         [ tt*1.17607 ];
+         [ r_nonr*0.51055 ];
+         [ mode#1*-0.52314 ];
+         [ mode#2*-0.05394 ];
+         [ mode#3*-2.49589 ];
+         [ purp#1*-1.14329 ];
+         [ purp#2*1.53604 ];
+         [ purp#3*-0.02913 ];
+         [ purp#4*0.76535 ];
+         [ tod#1*-1.94454 ];
+         [ tod#2*0.22996 ];
+         [ tod#3*0.02381 ];
+
+         ff*0.00145 (7);
+         price*0.14711 (8);
+         rating*0.20665 (9);
+         div*1.98974 (10);
+         tt*0.75706 (11);
+         r_nonr*0.34558 (12);
+
+         %C#4%
+
+         [ ff*0.99611 ];
+         [ price*1.14365 ];
+         [ rating*2.49081 ];
+         [ div*1.18473 ];
+         [ tt*1.52301 ];
+         [ r_nonr*0.79385 ];
+         [ mode#1*-0.28203 ];
+         [ mode#2*0.05797 ];
+         [ mode#3*-1.81521 ];
+         [ purp#1*-1.50408 ];
+         [ purp#2*1.13031 ];
+         [ purp#3*0.12822 ];
+         [ purp#4*0.98232 ];
+         [ tod#1*-1.51718 ];
+         [ tod#2*0.33723 ];
+         [ tod#3*0.32922 ];
+
+         ff*0.00145 (7);
+         price*0.14711 (8);
+         rating*0.20665 (9);
+         div*1.98974 (10);
+         tt*0.75706 (11);
+         r_nonr*0.34558 (12);
+
+
+  OUTPUT: TECH7 !TECH11 !TECH14 !TECH1;
+
+  PLOT: TYPE = PLOT3;
+      SERIES = ff(1) price(2) rating(3) div(4) tt(5) r_nonr(6);
+
+  SAVEDATA: FILE = 4_class_probabilities.dat;
+              SAVE = CPROBABILITIES;
+
+
+
+
+*** WARNING in MODEL command
+  Variable is uncorrelated with all other variables within class:  FF
+*** WARNING in MODEL command
+  Variable is uncorrelated with all other variables within class:  PRICE
+*** WARNING in MODEL command
+  Variable is uncorrelated with all other variables within class:  RATING
+*** WARNING in MODEL command
+  Variable is uncorrelated with all other variables within class:  DIV
+*** WARNING in MODEL command
+  Variable is uncorrelated with all other variables within class:  TT
+*** WARNING in MODEL command
+  Variable is uncorrelated with all other variables within class:  R_NONR
+*** WARNING in MODEL command
+  At least one variable is uncorrelated with all other variables within class.
+  Check that this is what is intended.
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Restaurant Preference Persona LPA
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        3150
+
+Number of dependent variables                                    9
+Number of independent variables                                 21
+Number of continuous latent variables                            0
+Number of categorical latent variables                           1
+
+Observed dependent variables
+
+  Continuous
+   FF          PRICE       RATING      DIV         TT          R_NONR
+
+  Unordered categorical (nominal)
+   MODE        PURP        TOD
+
+Observed independent variables
+   EMPL        MED_INC     HOME        FD          KIDS        VEH_HH
+   AGE_1       AGE_2       AGE_3       AGE_4       FEM         WHITE
+   ASIAN       HISPANIC    BLACK       INC_1       INC_2       INC_3
+   FULLTM      PARTTM      HOMEM
+
+Categorical latent variables
+   C
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                    STANDARD
+  Number of integration points                                  15
+  Dimensions of numerical integration                            0
+  Adaptive quadrature                                           ON
+Random Starts Specifications
+  Number of initial stage random starts                        400
+  Number of final stage optimizations                          100
+  Number of initial stage iterations                            10
+  Initial stage convergence criterion                    0.100D+01
+  Random starts scale                                    0.500D+01
+  Random seed for generating random starts                       0
+Cholesky                                                       OFF
+
+Input data file(s)
+  H:\kng9\mplus\final\lca_data.csv
+Input data format  FREE
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    MODE
+      Category 1    0.238          750.000
+      Category 2    0.398         1253.000
+      Category 3    0.038          119.000
+      Category 4    0.326         1028.000
+    PURP
+      Category 1    0.052          165.000
+      Category 2    0.457         1441.000
+      Category 3    0.116          365.000
+      Category 4    0.276          869.000
+      Category 5    0.098          310.000
+    TOD
+      Category 1    0.055          172.000
+      Category 2    0.363         1143.000
+      Category 3    0.308          971.000
+      Category 4    0.274          864.000
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     FF                    0.140       1.805       0.000   61.49%       0.000      0.000      0.000
+            3150.000       0.051       3.125       1.000    2.29%       0.000      0.286
+     PRICE                 1.728      -0.252       1.000   16.44%       1.500      1.500      2.000
+            3150.000       0.173       0.293       4.000    0.06%       2.000      2.000
+     RATING                3.641      -1.051       1.250    0.03%       3.250      3.600      3.750
+            3150.000       0.287       1.144       4.800    0.06%       3.850      4.100
+     DIV                   2.922       1.032       1.000   12.35%       2.000      2.000      2.000
+            3150.000       2.412       0.528       9.000    0.16%       3.000      4.000
+     TT                    1.334       2.203       0.200    0.16%       0.700      1.000      1.100
+            3150.000       0.763       7.498       7.500    0.06%       1.250      1.750
+     R_NONR                0.528       3.165       0.013    0.03%       0.133      0.261      0.337
+            3150.000       0.347      15.343       6.000    0.06%       0.444      0.750
+     EMPL                 10.575       2.219       0.164    0.03%       1.708      3.381      4.204
+            3150.000     216.183       4.372      62.565    3.90%       5.984     17.210
+     MED_INC              84.362      -0.090      17.188    0.54%      61.532     79.572     85.768
+            3150.000     722.209      -0.115     190.804    0.06%      92.606    107.480
+     HOME                  4.022       3.220       0.006    0.03%       0.637      1.566      2.309
+            3150.000      27.978      14.363      56.117    0.03%       3.200      5.934
+     FD                    0.037       4.919       0.000   96.32%       0.000      0.000      0.000
+            3150.000       0.035      22.193       1.000    3.68%       0.000      0.000
+     KIDS                  0.411       2.691       0.000   75.75%       0.000      0.000      0.000
+            3150.000       0.742       9.270       6.000    0.35%       0.000      1.000
+     VEH_HH                0.675       0.958       0.000   15.05%       0.333      0.500      0.500
+            3150.000       0.214       3.057       3.500    0.06%       1.000      1.000
+     AGE_1                 0.063       3.602       0.000   93.71%       0.000      0.000      0.000
+            3150.000       0.059      10.976       1.000    6.29%       0.000      0.000
+     AGE_2                 0.064       3.548       0.000   93.56%       0.000      0.000      0.000
+            3150.000       0.060      10.586       1.000    6.44%       0.000      0.000
+     AGE_3                 0.579      -0.319       0.000   42.13%       0.000      0.000      1.000
+            3150.000       0.244      -1.898       1.000   57.87%       1.000      1.000
+     AGE_4                 0.207       1.449       0.000   79.33%       0.000      0.000      0.000
+            3150.000       0.164       0.099       1.000   20.67%       0.000      1.000
+     FEM                   0.494       0.025       0.000   50.63%       0.000      0.000      0.000
+            3150.000       0.250      -1.999       1.000   49.37%       1.000      1.000
+     WHITE                 0.659      -0.671       0.000   34.10%       0.000      1.000      1.000
+            3150.000       0.225      -1.550       1.000   65.90%       1.000      1.000
+     ASIAN                 0.171       1.747       0.000   82.89%       0.000      0.000      0.000
+            3150.000       0.142       1.051       1.000   17.11%       0.000      0.000
+     HISPANIC              0.060       3.717       0.000   94.03%       0.000      0.000      0.000
+            3150.000       0.056      11.819       1.000    5.97%       0.000      0.000
+     BLACK                 0.031       5.401       0.000   96.89%       0.000      0.000      0.000
+            3150.000       0.030      27.175       1.000    3.11%       0.000      0.000
+     INC_1                 0.100       2.667       0.000   90.00%       0.000      0.000      0.000
+            3150.000       0.090       5.111       1.000   10.00%       0.000      0.000
+     INC_2                 0.246       1.179       0.000   75.40%       0.000      0.000      0.000
+            3150.000       0.186      -0.609       1.000   24.60%       0.000      1.000
+     INC_3                 0.377       0.507       0.000   62.29%       0.000      0.000      0.000
+            3150.000       0.235      -1.743       1.000   37.71%       0.000      1.000
+     FULLTM                0.625      -0.517       0.000   37.49%       0.000      1.000      1.000
+            3150.000       0.234      -1.733       1.000   62.51%       1.000      1.000
+     PARTTM                0.075       3.221       0.000   92.48%       0.000      0.000      0.000
+            3150.000       0.070       8.372       1.000    7.52%       0.000      0.000
+     HOMEM                 0.030       5.559       0.000   97.05%       0.000      0.000      0.000
+            3150.000       0.029      28.901       1.000    2.95%       0.000      0.000
+
+RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
+
+Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
+
+          -24788.621  unperturbed      0
+          -24788.621  391179           78
+          -24788.622  344422           296
+          -24788.622  22089            143
+          -25612.538  345070           114
+          -25612.548  784664           75
+          -25612.553  391949           295
+          -25633.236  164305           128
+          -25633.242  175199           247
+          -25633.243  695155           150
+          -25633.243  535804           111
+          -25633.243  259507           53
+          -25633.252  848890           95
+          -25633.252  970689           266
+          -25633.253  992389           77
+          -25633.253  567165           319
+          -25633.253  7959             256
+          -25677.402  153053           378
+          -25679.640  829540           324
+          -25750.906  856536           144
+          -25750.906  407108           366
+          -25750.906  568859           49
+          -25874.995  227563           63
+          -25875.005  957392           79
+          -25912.282  821011           161
+          -25912.282  616917           261
+          -25912.283  443917           60
+          -25924.855  314757           345
+          -25925.681  73576            213
+          -25926.212  349263           263
+          -25946.419  484687           306
+          -25964.372  625191           350
+          -25964.376  192071           142
+          -25964.376  484501           163
+          -25964.378  835767           210
+          -25964.383  301180           236
+          -26007.483  281558           184
+          -26015.833  575700           100
+          -26160.352  830570           369
+          -26162.571  951709           348
+          -26166.981  673496           218
+          -26179.034  170118           238
+          -26181.305  195873           6
+          -26189.664  402224           91
+          -26192.240  57226            208
+          -26196.501  202790           198
+          -26203.570  626087           314
+          -26203.570  1548             384
+          -26203.570  185071           370
+          -26203.570  617243           237
+          -26203.570  674171           195
+          -26203.570  931874           141
+          -26203.570  311214           64
+          -26203.570  303634           169
+          -26203.570  349562           359
+          -26203.570  207896           25
+          -26203.570  614009           317
+          -26203.570  76337            76
+          -26203.570  195763           358
+          -26203.570  297518           166
+          -26203.570  437181           135
+          -26203.570  790452           303
+          -26203.570  592219           119
+          -26203.570  587946           120
+          -26203.570  848331           137
+          -26203.570  496881           192
+          -26203.570  313407           132
+          -26203.591  479273           156
+          -26203.599  850840           232
+          -26238.569  476498           179
+          -26312.922  466971           109
+          -26326.764  441191           361
+          -26377.118  840078           203
+          -26398.814  723775           97
+          -26442.487  66276            217
+          -26442.591  569131           26
+          -26460.800  760878           249
+          -26460.803  782200           84
+          -26460.804  875667           367
+          -26460.804  761633           50
+          -26460.804  972873           157
+          -26460.805  372176           23
+          -26460.824  462228           298
+          -26460.987  36714            201
+          -26461.457  40340            188
+
+15 perturbed starting value run(s) did not converge or were rejected in the third stage.
+
+
+
+THE BEST LOGLIKELIHOOD VALUE HAS BEEN REPLICATED.  RERUN WITH AT LEAST TWICE THE
+RANDOM STARTS TO CHECK THAT THE BEST LOGLIKELIHOOD IS STILL OBTAINED AND REPLICATED.
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                      136
+
+Loglikelihood
+
+          H0 Value                      -24788.621
+          H0 Scaling Correction Factor      1.1512
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   49849.243
+          Bayesian (BIC)                 50672.744
+          Sample-Size Adjusted BIC       50240.615
+            (n* = (n + 2) / 24)
+
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THE ESTIMATED MODEL
+
+    Latent
+   Classes
+
+       1        462.26692          0.14675
+       2       2045.24443          0.64928
+       3        569.40497          0.18076
+       4         73.08368          0.02320
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON ESTIMATED POSTERIOR PROBABILITIES
+
+    Latent
+   Classes
+
+       1        462.26692          0.14675
+       2       2045.24443          0.64928
+       3        569.40497          0.18076
+       4         73.08367          0.02320
+
+
+FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
+BASED ON THEIR MOST LIKELY LATENT CLASS MEMBERSHIP
+
+Class Counts and Proportions
+
+    Latent
+   Classes
+
+       1              461          0.14635
+       2             2043          0.64857
+       3              573          0.18190
+       4               73          0.02317
+
+
+CLASSIFICATION QUALITY
+
+     Entropy                         0.985
+
+
+Average Latent Class Probabilities for Most Likely Latent Class Membership (Row)
+by Latent Class (Column)
+
+           1        2        3        4
+
+    1   0.994    0.000    0.005    0.001
+    2   0.000    0.995    0.005    0.000
+    3   0.006    0.021    0.973    0.000
+    4   0.006    0.000    0.000    0.994
+
+
+Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+           1        2        3        4
+
+    1   0.991    0.000    0.008    0.001
+    2   0.000    0.994    0.006    0.000
+    3   0.004    0.017    0.979    0.000
+    4   0.008    0.000    0.000    0.992
+
+
+Logits for the Classification Probabilities for the Most Likely Latent Class Membership (Column)
+by Latent Class (Row)
+
+              1        2        3        4
+
+    1      6.879   -6.927    2.029    0.000
+    2      0.000   13.810    8.659    0.000
+    3      8.275    9.727   13.795    0.000
+    4     -4.873  -13.808  -13.808    0.000
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ Means
+    FF                 0.499      0.003    170.717      0.000
+    PRICE              1.438      0.017     85.064      0.000
+    RATING             3.156      0.026    122.987      0.000
+    DIV                2.346      0.045     52.509      0.000
+    TT                 1.403      0.044     31.550      0.000
+    R_NONR             0.533      0.026     20.163      0.000
+    MODE#1            -0.291      0.117     -2.490      0.013
+    MODE#2            -0.212      0.115     -1.847      0.065
+    MODE#3            -2.319      0.254     -9.115      0.000
+    PURP#1            -0.417      0.239     -1.745      0.081
+    PURP#2             1.404      0.169      8.333      0.000
+    PURP#3             0.513      0.192      2.670      0.008
+    PURP#4             1.125      0.174      6.472      0.000
+    TOD#1             -1.627      0.234     -6.957      0.000
+    TOD#2              0.418      0.123      3.400      0.001
+    TOD#3              0.346      0.125      2.773      0.006
+
+ Variances
+    FF                 0.001      0.000     16.747      0.000
+    PRICE              0.147      0.004     32.954      0.000
+    RATING             0.207      0.007     30.004      0.000
+    DIV                1.987      0.068     29.161      0.000
+    TT                 0.757      0.041     18.395      0.000
+    R_NONR             0.346      0.026     13.362      0.000
+
+Latent Class 2
+
+ Means
+    FF                 0.005      0.001      8.288      0.000
+    PRICE              1.823      0.009    212.036      0.000
+    RATING             3.792      0.010    396.601      0.000
+    DIV                2.762      0.037     74.975      0.000
+    TT                 1.356      0.020     67.875      0.000
+    R_NONR             0.522      0.013     41.318      0.000
+    MODE#1            -0.260      0.062     -4.231      0.000
+    MODE#2             0.362      0.053      6.829      0.000
+    MODE#3            -2.036      0.119    -17.060      0.000
+    PURP#1            -0.532      0.118     -4.507      0.000
+    PURP#2             1.579      0.079     19.940      0.000
+    PURP#3             0.126      0.099      1.282      0.200
+    PURP#4             1.085      0.083     13.025      0.000
+    TOD#1             -1.538      0.100    -15.350      0.000
+    TOD#2              0.262      0.056      4.678      0.000
+    TOD#3              0.084      0.058      1.438      0.150
+
+ Variances
+    FF                 0.001      0.000     16.747      0.000
+    PRICE              0.147      0.004     32.954      0.000
+    RATING             0.207      0.007     30.004      0.000
+    DIV                1.987      0.068     29.161      0.000
+    TT                 0.757      0.041     18.395      0.000
+    R_NONR             0.346      0.026     13.362      0.000
+
+Latent Class 3
+
+ Means
+    FF                 0.223      0.004     50.894      0.000
+    PRICE              1.696      0.018     93.734      0.000
+    RATING             3.637      0.020    181.843      0.000
+    DIV                4.187      0.063     66.226      0.000
+    TT                 1.176      0.026     45.969      0.000
+    R_NONR             0.511      0.028     18.409      0.000
+    MODE#1            -0.518      0.114     -4.547      0.000
+    MODE#2            -0.051      0.104     -0.494      0.621
+    MODE#3            -2.496      0.252     -9.899      0.000
+    PURP#1            -1.146      0.259     -4.434      0.000
+    PURP#2             1.537      0.141     10.879      0.000
+    PURP#3            -0.034      0.185     -0.182      0.855
+    PURP#4             0.763      0.155      4.909      0.000
+    TOD#1             -1.930      0.223     -8.644      0.000
+    TOD#2              0.232      0.107      2.167      0.030
+    TOD#3              0.025      0.112      0.224      0.823
+
+ Variances
+    FF                 0.001      0.000     16.747      0.000
+    PRICE              0.147      0.004     32.954      0.000
+    RATING             0.207      0.007     30.004      0.000
+    DIV                1.987      0.068     29.161      0.000
+    TT                 0.757      0.041     18.395      0.000
+    R_NONR             0.346      0.026     13.362      0.000
+
+Latent Class 4
+
+ Means
+    FF                 0.996      0.005    199.844      0.000
+    PRICE              1.144      0.033     34.533      0.000
+    RATING             2.491      0.073     34.057      0.000
+    DIV                1.182      0.047     25.280      0.000
+    TT                 1.523      0.147     10.378      0.000
+    R_NONR             0.794      0.075     10.572      0.000
+    MODE#1            -0.280      0.313     -0.895      0.371
+    MODE#2             0.058      0.288      0.203      0.839
+    MODE#3            -1.814      0.544     -3.334      0.001
+    PURP#1            -1.504      0.782     -1.924      0.054
+    PURP#2             1.125      0.388      2.903      0.004
+    PURP#3             0.140      0.459      0.305      0.760
+    PURP#4             0.981      0.391      2.511      0.012
+    TOD#1             -1.524      0.554     -2.749      0.006
+    TOD#2              0.330      0.308      1.072      0.284
+    TOD#3              0.316      0.311      1.019      0.308
+
+ Variances
+    FF                 0.001      0.000     16.747      0.000
+    PRICE              0.147      0.004     32.954      0.000
+    RATING             0.207      0.007     30.004      0.000
+    DIV                1.987      0.068     29.161      0.000
+    TT                 0.757      0.041     18.395      0.000
+    R_NONR             0.346      0.026     13.362      0.000
+
+Categorical Latent Variables
+
+ C#1        ON
+    EMPL               0.001      0.009      0.131      0.895
+    MED_INC            0.004      0.005      0.907      0.364
+    HOME              -0.009      0.023     -0.379      0.705
+    FD                -0.060      0.662     -0.091      0.928
+    KIDS               0.160      0.142      1.123      0.261
+    VEH_HH             0.624      0.329      1.898      0.058
+    AGE_1              0.233      0.663      0.352      0.725
+    AGE_2              0.230      0.637      0.361      0.718
+    AGE_3              0.948      0.536      1.770      0.077
+    AGE_4              0.534      0.509      1.049      0.294
+    FEM               -0.114      0.256     -0.447      0.655
+    WHITE              0.615      0.425      1.447      0.148
+    ASIAN              0.348      0.490      0.709      0.478
+    HISPANIC           1.202      0.708      1.698      0.090
+    BLACK              1.466      1.078      1.361      0.174
+    INC_1             -0.144      0.453     -0.318      0.750
+    INC_2             -0.190      0.357     -0.531      0.595
+    INC_3             -0.100      0.331     -0.302      0.763
+    FULLTM            -0.584      0.402     -1.455      0.146
+    PARTTM            -0.402      0.556     -0.722      0.470
+    HOMEM             -1.222      0.626     -1.951      0.051
+
+ C#2        ON
+    EMPL              -0.003      0.008     -0.419      0.675
+    MED_INC            0.004      0.005      0.909      0.363
+    HOME              -0.024      0.022     -1.069      0.285
+    FD                -0.264      0.627     -0.422      0.673
+    KIDS              -0.036      0.133     -0.271      0.787
+    VEH_HH             0.346      0.315      1.098      0.272
+    AGE_1              0.018      0.628      0.028      0.977
+    AGE_2              0.093      0.587      0.158      0.874
+    AGE_3              0.599      0.508      1.179      0.239
+    AGE_4              0.339      0.477      0.711      0.477
+    FEM               -0.148      0.241     -0.615      0.538
+    WHITE              0.512      0.389      1.316      0.188
+    ASIAN              0.549      0.450      1.221      0.222
+    HISPANIC           0.659      0.675      0.976      0.329
+    BLACK              1.467      1.041      1.409      0.159
+    INC_1             -0.330      0.421     -0.784      0.433
+    INC_2             -0.204      0.337     -0.605      0.545
+    INC_3             -0.176      0.313     -0.563      0.573
+    FULLTM            -0.385      0.383     -1.008      0.314
+    PARTTM            -0.244      0.523     -0.466      0.641
+    HOMEM             -1.155      0.574     -2.011      0.044
+
+ C#3        ON
+    EMPL              -0.009      0.009     -1.015      0.310
+    MED_INC            0.008      0.005      1.738      0.082
+    HOME              -0.014      0.023     -0.621      0.535
+    FD                 0.446      0.645      0.692      0.489
+    KIDS               0.008      0.143      0.055      0.956
+    VEH_HH             0.436      0.327      1.334      0.182
+    AGE_1              0.684      0.682      1.003      0.316
+    AGE_2              0.848      0.633      1.339      0.181
+    AGE_3              1.240      0.552      2.246      0.025
+    AGE_4              0.826      0.524      1.575      0.115
+    FEM               -0.280      0.253     -1.109      0.268
+    WHITE              0.510      0.411      1.242      0.214
+    ASIAN              0.430      0.476      0.903      0.366
+    HISPANIC           0.951      0.696      1.365      0.172
+    BLACK              1.373      1.064      1.290      0.197
+    INC_1             -0.247      0.450     -0.550      0.583
+    INC_2             -0.051      0.354     -0.144      0.885
+    INC_3             -0.017      0.328     -0.051      0.959
+    FULLTM            -0.131      0.404     -0.325      0.745
+    PARTTM             0.144      0.550      0.261      0.794
+    HOMEM             -1.023      0.629     -1.626      0.104
+
+ Intercepts
+    C#1                0.390      0.783      0.498      0.618
+    C#2                2.573      0.722      3.563      0.000
+    C#3                0.052      0.770      0.067      0.947
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.290E-08
+       (ratio of smallest to largest eigenvalue)
+
+
+RESULTS IN PROBABILITY SCALE
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Latent Class 1
+
+ MODE
+    Category 1         0.282      0.021     13.363      0.000
+    Category 2         0.305      0.022     14.118      0.000
+    Category 3         0.037      0.009      4.199      0.000
+    Category 4         0.377      0.023     16.524      0.000
+ PURP
+    Category 1         0.063      0.011      5.561      0.000
+    Category 2         0.389      0.023     17.024      0.000
+    Category 3         0.159      0.017      9.207      0.000
+    Category 4         0.294      0.021     13.741      0.000
+    Category 5         0.095      0.014      6.967      0.000
+ TOD
+    Category 1         0.048      0.010      4.803      0.000
+    Category 2         0.368      0.023     16.290      0.000
+    Category 3         0.342      0.022     15.409      0.000
+    Category 4         0.242      0.020     12.021      0.000
+
+Latent Class 2
+
+ MODE
+    Category 1         0.231      0.009     24.637      0.000
+    Category 2         0.430      0.011     38.957      0.000
+    Category 3         0.039      0.004      9.091      0.000
+    Category 4         0.300      0.010     29.382      0.000
+ PURP
+    Category 1         0.056      0.005     10.965      0.000
+    Category 2         0.461      0.011     41.404      0.000
+    Category 3         0.108      0.007     15.656      0.000
+    Category 4         0.281      0.010     28.108      0.000
+    Category 5         0.095      0.007     14.597      0.000
+ TOD
+    Category 1         0.060      0.005     11.344      0.000
+    Category 2         0.361      0.011     33.813      0.000
+    Category 3         0.302      0.010     29.614      0.000
+    Category 4         0.278      0.010     27.899      0.000
+
+Latent Class 3
+
+ MODE
+    Category 1         0.227      0.018     12.581      0.000
+    Category 2         0.362      0.021     16.865      0.000
+    Category 3         0.031      0.007      4.201      0.000
+    Category 4         0.380      0.021     17.852      0.000
+ PURP
+    Category 1         0.035      0.008      4.515      0.000
+    Category 2         0.512      0.022     23.624      0.000
+    Category 3         0.106      0.014      7.852      0.000
+    Category 4         0.236      0.018     12.908      0.000
+    Category 5         0.110      0.013      8.300      0.000
+ TOD
+    Category 1         0.042      0.009      4.911      0.000
+    Category 2         0.367      0.021     17.741      0.000
+    Category 3         0.299      0.020     15.263      0.000
+    Category 4         0.291      0.020     14.894      0.000
+
+Latent Class 4
+
+ MODE
+    Category 1         0.254      0.052      4.897      0.000
+    Category 2         0.356      0.057      6.234      0.000
+    Category 3         0.055      0.027      2.050      0.040
+    Category 4         0.336      0.056      5.949      0.000
+ PURP
+    Category 1         0.027      0.019      1.435      0.151
+    Category 2         0.379      0.057      6.600      0.000
+    Category 3         0.142      0.041      3.437      0.001
+    Category 4         0.329      0.056      5.864      0.000
+    Category 5         0.123      0.039      3.192      0.001
+ TOD
+    Category 1         0.055      0.027      2.054      0.040
+    Category 2         0.349      0.056      6.219      0.000
+    Category 3         0.345      0.056      6.134      0.000
+    Category 4         0.251      0.051      4.900      0.000
+
+
+LATENT CLASS INDICATOR ODDS RATIOS FOR THE LATENT CLASSES
+
+                                                95% C.I.
+                    Estimate       S.E.  Lower 2.5% Upper 2.5%
+
+Latent Class 1 Compared to Latent Class 2
+
+ MODE
+    Category = 1       1.305      0.152      1.038      1.641
+    Category = 2       0.580      0.065      0.466      0.722
+    Category = 3       0.945      0.257      0.554      1.611
+    Category = 4       1.413      0.153      1.142      1.747
+ PURP
+    Category = 1       1.136      0.244      0.746      1.731
+    Category = 2       0.744      0.079      0.605      0.916
+    Category = 3       1.570      0.232      1.175      2.097
+    Category = 4       1.064      0.122      0.851      1.332
+    Category = 5       1.006      0.177      0.712      1.419
+ TOD
+    Category = 1       0.788      0.187      0.494      1.256
+    Category = 2       1.031      0.111      0.835      1.273
+    Category = 3       1.203      0.132      0.970      1.492
+    Category = 4       0.832      0.100      0.657      1.053
+
+Latent Class 1 Compared to Latent Class 3
+
+ MODE
+    Category = 1       1.337      0.197      1.002      1.783
+    Category = 2       0.774      0.108      0.590      1.017
+    Category = 3       1.188      0.416      0.598      2.359
+    Category = 4       0.984      0.132      0.757      1.279
+ PURP
+    Category = 1       1.849      0.553      1.029      3.324
+    Category = 2       0.605      0.079      0.469      0.781
+    Category = 3       1.590      0.312      1.083      2.335
+    Category = 4       1.346      0.196      1.012      1.790
+    Category = 5       0.852      0.178      0.566      1.283
+ TOD
+    Category = 1       1.132      0.346      0.622      2.059
+    Category = 2       1.002      0.133      0.773      1.300
+    Category = 3       1.221      0.167      0.934      1.595
+    Category = 4       0.777      0.114      0.583      1.035
+
+Latent Class 1 Compared to Latent Class 4
+
+ MODE
+    Category = 1       1.153      0.339      0.648      2.050
+    Category = 2       0.794      0.215      0.467      1.348
+    Category = 3       0.664      0.380      0.216      2.041
+    Category = 4       1.196      0.326      0.701      2.039
+ PURP
+    Category = 1       2.384      1.768      0.557     10.199
+    Category = 2       1.040      0.274      0.621      1.742
+    Category = 3       1.149      0.418      0.563      2.343
+    Category = 4       0.850      0.234      0.496      1.458
+    Category = 5       0.751      0.294      0.349      1.617
+ TOD
+    Category = 1       0.863      0.483      0.288      2.582
+    Category = 2       1.084      0.288      0.643      1.826
+    Category = 3       0.989      0.265      0.585      1.673
+    Category = 4       0.953      0.281      0.535      1.697
+
+Latent Class 2 Compared to Latent Class 3
+
+ MODE
+    Category = 1       1.024      0.119      0.815      1.287
+    Category = 2       1.335      0.140      1.087      1.639
+    Category = 3       1.258      0.343      0.737      2.147
+    Category = 4       0.696      0.072      0.568      0.854
+ PURP
+    Category = 1       1.627      0.406      0.998      2.655
+    Category = 2       0.813      0.080      0.670      0.987
+    Category = 3       1.013      0.163      0.740      1.388
+    Category = 4       1.264      0.144      1.012      1.580
+    Category = 5       0.848      0.132      0.624      1.150
+ TOD
+    Category = 1       1.436      0.336      0.908      2.270
+    Category = 2       0.972      0.098      0.797      1.186
+    Category = 3       1.015      0.107      0.824      1.249
+    Category = 4       0.934      0.101      0.756      1.154
+
+Latent Class 2 Compared to Latent Class 4
+
+ MODE
+    Category = 1       0.883      0.246      0.512      1.525
+    Category = 2       1.368      0.346      0.833      2.246
+    Category = 3       0.703      0.372      0.250      1.983
+    Category = 4       0.846      0.218      0.511      1.402
+ PURP
+    Category = 1       2.098      1.517      0.509      8.654
+    Category = 2       1.397      0.347      0.859      2.272
+    Category = 3       0.732      0.254      0.371      1.443
+    Category = 4       0.799      0.207      0.481      1.327
+    Category = 5       0.747      0.273      0.365      1.528
+ TOD
+    Category = 1       1.095      0.573      0.392      3.055
+    Category = 2       1.051      0.264      0.642      1.721
+    Category = 3       0.822      0.208      0.500      1.351
+    Category = 4       1.146      0.317      0.666      1.972
+
+Latent Class 3 Compared to Latent Class 4
+
+ MODE
+    Category = 1       0.862      0.252      0.486      1.529
+    Category = 2       1.025      0.273      0.608      1.727
+    Category = 3       0.559      0.320      0.182      1.715
+    Category = 4       1.215      0.327      0.717      2.059
+ PURP
+    Category = 1       1.289      0.970      0.295      5.632
+    Category = 2       1.718      0.445      1.034      2.854
+    Category = 3       0.722      0.266      0.351      1.487
+    Category = 4       0.632      0.173      0.370      1.080
+    Category = 5       0.881      0.337      0.417      1.864
+ TOD
+    Category = 1       0.763      0.425      0.256      2.274
+    Category = 2       1.081      0.284      0.646      1.809
+    Category = 3       0.810      0.215      0.481      1.364
+    Category = 4       1.226      0.354      0.697      2.159
+
+
+LOGISTIC REGRESSION ODDS RATIO RESULTS
+
+                                                95% C.I.
+                    Estimate       S.E.  Lower 2.5% Upper 2.5%
+
+Categorical Latent Variables
+
+ C#1      ON
+    EMPL               1.001      0.009      0.984      1.018
+    MED_INC            1.004      0.005      0.995      1.014
+    HOME               0.991      0.023      0.948      1.037
+    FD                 0.942      0.623      0.257      3.446
+    KIDS               1.173      0.167      0.888      1.550
+    VEH_HH             1.866      0.613      0.980      3.555
+    AGE_1              1.263      0.838      0.344      4.634
+    AGE_2              1.258      0.801      0.361      4.383
+    AGE_3              2.581      1.382      0.903      7.373
+    AGE_4              1.705      0.868      0.629      4.622
+    FEM                0.892      0.228      0.540      1.473
+    WHITE              1.850      0.786      0.804      4.254
+    ASIAN              1.416      0.694      0.542      3.699
+    HISPANIC           3.327      2.356      0.830     13.328
+    BLACK              4.334      4.670      0.524     35.821
+    INC_1              0.866      0.392      0.356      2.103
+    INC_2              0.827      0.295      0.411      1.665
+    INC_3              0.905      0.299      0.474      1.730
+    FULLTM             0.557      0.224      0.254      1.225
+    PARTTM             0.669      0.372      0.225      1.991
+    HOMEM              0.295      0.185      0.086      1.005
+
+ C#2      ON
+    EMPL               0.997      0.008      0.981      1.013
+    MED_INC            1.004      0.005      0.995      1.013
+    HOME               0.977      0.022      0.935      1.020
+    FD                 0.768      0.481      0.225      2.625
+    KIDS               0.965      0.129      0.743      1.253
+    VEH_HH             1.413      0.445      0.762      2.620
+    AGE_1              1.018      0.639      0.297      3.485
+    AGE_2              1.097      0.645      0.347      3.470
+    AGE_3              1.820      0.924      0.672      4.924
+    AGE_4              1.403      0.669      0.551      3.572
+    FEM                0.862      0.207      0.538      1.382
+    WHITE              1.668      0.649      0.778      3.575
+    ASIAN              1.732      0.779      0.717      4.181
+    HISPANIC           1.932      1.305      0.515      7.258
+    BLACK              4.336      4.513      0.564     33.348
+    INC_1              0.719      0.303      0.315      1.642
+    INC_2              0.815      0.275      0.421      1.579
+    INC_3              0.838      0.263      0.454      1.549
+    FULLTM             0.680      0.260      0.321      1.440
+    PARTTM             0.783      0.410      0.281      2.185
+    HOMEM              0.315      0.181      0.102      0.971
+
+ C#3      ON
+    EMPL               0.991      0.009      0.974      1.008
+    MED_INC            1.008      0.005      0.999      1.017
+    HOME               0.986      0.022      0.943      1.031
+    FD                 1.563      1.008      0.441      5.535
+    KIDS               1.008      0.144      0.762      1.334
+    VEH_HH             1.546      0.505      0.815      2.934
+    AGE_1              1.981      1.351      0.521      7.539
+    AGE_2              2.335      1.479      0.675      8.078
+    AGE_3              3.456      1.908      1.171     10.200
+    AGE_4              2.283      1.197      0.817      6.380
+    FEM                0.756      0.191      0.460      1.240
+    WHITE              1.666      0.685      0.744      3.728
+    ASIAN              1.537      0.732      0.605      3.908
+    HISPANIC           2.588      1.802      0.661     10.132
+    BLACK              3.948      4.202      0.490     31.801
+    INC_1              0.781      0.351      0.324      1.886
+    INC_2              0.950      0.337      0.474      1.903
+    INC_3              0.983      0.323      0.517      1.870
+    FULLTM             0.877      0.354      0.397      1.936
+    PARTTM             1.155      0.635      0.393      3.392
+    HOMEM              0.359      0.226      0.105      1.234
+
+
+ALTERNATIVE PARAMETERIZATIONS FOR THE CATEGORICAL LATENT VARIABLE REGRESSION
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Parameterization using Reference Class 1
+
+ C#2      ON
+    EMPL              -0.005      0.004     -1.251      0.211
+    MED_INC            0.000      0.002     -0.141      0.888
+    HOME              -0.015      0.010     -1.531      0.126
+    FD                -0.205      0.285     -0.717      0.474
+    KIDS              -0.196      0.067     -2.920      0.004
+    VEH_HH            -0.278      0.116     -2.395      0.017
+    AGE_1             -0.215      0.287     -0.750      0.453
+    AGE_2             -0.137      0.308     -0.443      0.657
+    AGE_3             -0.349      0.219     -1.596      0.111
+    AGE_4             -0.195      0.225     -0.867      0.386
+    FEM               -0.034      0.106     -0.317      0.751
+    WHITE             -0.103      0.202     -0.510      0.610
+    ASIAN              0.202      0.234      0.860      0.390
+    HISPANIC          -0.543      0.268     -2.024      0.043
+    BLACK              0.000      0.359      0.001      0.999
+    INC_1             -0.186      0.205     -0.909      0.363
+    INC_2             -0.014      0.149     -0.097      0.923
+    INC_3             -0.077      0.130     -0.588      0.557
+    FULLTM             0.199      0.152      1.309      0.191
+    PARTTM             0.158      0.237      0.667      0.505
+    HOMEM              0.067      0.320      0.211      0.833
+
+ C#3      ON
+    EMPL              -0.010      0.005     -2.205      0.027
+    MED_INC            0.004      0.002      1.519      0.129
+    HOME              -0.005      0.011     -0.488      0.625
+    FD                 0.506      0.319      1.588      0.112
+    KIDS              -0.152      0.083     -1.818      0.069
+    VEH_HH            -0.188      0.147     -1.279      0.201
+    AGE_1              0.450      0.392      1.149      0.250
+    AGE_2              0.618      0.390      1.584      0.113
+    AGE_3              0.292      0.310      0.943      0.346
+    AGE_4              0.292      0.316      0.924      0.355
+    FEM               -0.166      0.132     -1.256      0.209
+    WHITE             -0.105      0.243     -0.431      0.667
+    ASIAN              0.083      0.282      0.292      0.770
+    HISPANIC          -0.251      0.321     -0.782      0.434
+    BLACK             -0.093      0.430     -0.217      0.828
+    INC_1             -0.103      0.256     -0.402      0.688
+    INC_2              0.139      0.184      0.752      0.452
+    INC_3              0.083      0.162      0.513      0.608
+    FULLTM             0.453      0.200      2.270      0.023
+    PARTTM             0.546      0.289      1.887      0.059
+    HOMEM              0.199      0.418      0.476      0.634
+
+ C#4      ON
+    EMPL              -0.001      0.009     -0.131      0.895
+    MED_INC           -0.004      0.005     -0.907      0.364
+    HOME               0.009      0.023      0.379      0.705
+    FD                 0.060      0.662      0.091      0.928
+    KIDS              -0.160      0.142     -1.123      0.261
+    VEH_HH            -0.624      0.329     -1.898      0.058
+    AGE_1             -0.233      0.663     -0.352      0.725
+    AGE_2             -0.230      0.637     -0.361      0.718
+    AGE_3             -0.948      0.536     -1.770      0.077
+    AGE_4             -0.534      0.509     -1.049      0.294
+    FEM                0.114      0.256      0.447      0.655
+    WHITE             -0.615      0.425     -1.447      0.148
+    ASIAN             -0.348      0.490     -0.709      0.478
+    HISPANIC          -1.202      0.708     -1.698      0.090
+    BLACK             -1.466      1.078     -1.361      0.174
+    INC_1              0.144      0.453      0.318      0.750
+    INC_2              0.190      0.357      0.531      0.595
+    INC_3              0.100      0.331      0.302      0.763
+    FULLTM             0.584      0.402      1.455      0.146
+    PARTTM             0.402      0.556      0.722      0.470
+    HOMEM              1.222      0.626      1.951      0.051
+
+ Intercepts
+    C#2                2.183      0.369      5.909      0.000
+    C#3               -0.339      0.458     -0.738      0.460
+    C#4               -0.390      0.783     -0.498      0.618
+
+Parameterization using Reference Class 2
+
+ C#1      ON
+    EMPL               0.005      0.004      1.251      0.211
+    MED_INC            0.000      0.002      0.141      0.888
+    HOME               0.015      0.010      1.531      0.126
+    FD                 0.205      0.285      0.717      0.474
+    KIDS               0.196      0.067      2.920      0.004
+    VEH_HH             0.278      0.116      2.395      0.017
+    AGE_1              0.215      0.287      0.750      0.453
+    AGE_2              0.137      0.308      0.443      0.657
+    AGE_3              0.349      0.219      1.596      0.111
+    AGE_4              0.195      0.225      0.867      0.386
+    FEM                0.034      0.106      0.317      0.751
+    WHITE              0.103      0.202      0.510      0.610
+    ASIAN             -0.202      0.234     -0.860      0.390
+    HISPANIC           0.543      0.268      2.024      0.043
+    BLACK              0.000      0.359     -0.001      0.999
+    INC_1              0.186      0.205      0.909      0.363
+    INC_2              0.014      0.149      0.097      0.923
+    INC_3              0.077      0.130      0.588      0.557
+    FULLTM            -0.199      0.152     -1.309      0.191
+    PARTTM            -0.158      0.237     -0.667      0.505
+    HOMEM             -0.067      0.320     -0.211      0.833
+
+ C#3      ON
+    EMPL              -0.005      0.003     -1.539      0.124
+    MED_INC            0.004      0.002      2.391      0.017
+    HOME               0.009      0.009      1.112      0.266
+    FD                 0.711      0.243      2.928      0.003
+    KIDS               0.044      0.069      0.634      0.526
+    VEH_HH             0.090      0.118      0.762      0.446
+    AGE_1              0.666      0.328      2.027      0.043
+    AGE_2              0.755      0.301      2.511      0.012
+    AGE_3              0.642      0.256      2.504      0.012
+    AGE_4              0.487      0.259      1.879      0.060
+    FEM               -0.132      0.102     -1.301      0.193
+    WHITE             -0.001      0.182     -0.007      0.994
+    ASIAN             -0.119      0.210     -0.568      0.570
+    HISPANIC           0.292      0.255      1.147      0.251
+    BLACK             -0.094      0.323     -0.290      0.772
+    INC_1              0.083      0.201      0.414      0.679
+    INC_2              0.153      0.143      1.073      0.283
+    INC_3              0.160      0.126      1.269      0.205
+    FULLTM             0.254      0.163      1.564      0.118
+    PARTTM             0.388      0.223      1.740      0.082
+    HOMEM              0.132      0.338      0.390      0.697
+
+ C#4      ON
+    EMPL               0.003      0.008      0.419      0.675
+    MED_INC           -0.004      0.005     -0.909      0.363
+    HOME               0.024      0.022      1.069      0.285
+    FD                 0.264      0.627      0.422      0.673
+    KIDS               0.036      0.133      0.271      0.787
+    VEH_HH            -0.346      0.315     -1.098      0.272
+    AGE_1             -0.018      0.628     -0.028      0.977
+    AGE_2             -0.093      0.587     -0.158      0.874
+    AGE_3             -0.599      0.508     -1.179      0.239
+    AGE_4             -0.339      0.477     -0.711      0.477
+    FEM                0.148      0.241      0.615      0.538
+    WHITE             -0.512      0.389     -1.316      0.188
+    ASIAN             -0.549      0.450     -1.221      0.222
+    HISPANIC          -0.659      0.675     -0.976      0.329
+    BLACK             -1.467      1.041     -1.409      0.159
+    INC_1              0.330      0.421      0.784      0.433
+    INC_2              0.204      0.337      0.605      0.545
+    INC_3              0.176      0.313      0.563      0.573
+    FULLTM             0.385      0.383      1.008      0.314
+    PARTTM             0.244      0.523      0.466      0.641
+    HOMEM              1.155      0.574      2.011      0.044
+
+ Intercepts
+    C#1               -2.183      0.369     -5.909      0.000
+    C#3               -2.521      0.347     -7.269      0.000
+    C#4               -2.573      0.722     -3.563      0.000
+
+Parameterization using Reference Class 3
+
+ C#1      ON
+    EMPL               0.010      0.005      2.205      0.027
+    MED_INC           -0.004      0.002     -1.519      0.129
+    HOME               0.005      0.011      0.488      0.625
+    FD                -0.506      0.319     -1.588      0.112
+    KIDS               0.152      0.083      1.818      0.069
+    VEH_HH             0.188      0.147      1.279      0.201
+    AGE_1             -0.450      0.392     -1.149      0.250
+    AGE_2             -0.618      0.390     -1.584      0.113
+    AGE_3             -0.292      0.310     -0.943      0.346
+    AGE_4             -0.292      0.316     -0.924      0.355
+    FEM                0.166      0.132      1.256      0.209
+    WHITE              0.105      0.243      0.431      0.667
+    ASIAN             -0.083      0.282     -0.292      0.770
+    HISPANIC           0.251      0.321      0.782      0.434
+    BLACK              0.093      0.430      0.217      0.828
+    INC_1              0.103      0.256      0.402      0.688
+    INC_2             -0.139      0.184     -0.752      0.452
+    INC_3             -0.083      0.162     -0.513      0.608
+    FULLTM            -0.453      0.200     -2.270      0.023
+    PARTTM            -0.546      0.289     -1.887      0.059
+    HOMEM             -0.199      0.418     -0.476      0.634
+
+ C#2      ON
+    EMPL               0.005      0.003      1.539      0.124
+    MED_INC           -0.004      0.002     -2.391      0.017
+    HOME              -0.009      0.009     -1.112      0.266
+    FD                -0.711      0.243     -2.928      0.003
+    KIDS              -0.044      0.069     -0.634      0.526
+    VEH_HH            -0.090      0.118     -0.762      0.446
+    AGE_1             -0.666      0.328     -2.027      0.043
+    AGE_2             -0.755      0.301     -2.511      0.012
+    AGE_3             -0.642      0.256     -2.504      0.012
+    AGE_4             -0.487      0.259     -1.879      0.060
+    FEM                0.132      0.102      1.301      0.193
+    WHITE              0.001      0.182      0.007      0.994
+    ASIAN              0.119      0.210      0.568      0.570
+    HISPANIC          -0.292      0.255     -1.147      0.251
+    BLACK              0.094      0.323      0.290      0.772
+    INC_1             -0.083      0.201     -0.414      0.679
+    INC_2             -0.153      0.143     -1.073      0.283
+    INC_3             -0.160      0.126     -1.269      0.205
+    FULLTM            -0.254      0.163     -1.564      0.118
+    PARTTM            -0.388      0.223     -1.740      0.082
+    HOMEM             -0.132      0.338     -0.390      0.697
+
+ C#4      ON
+    EMPL               0.009      0.009      1.015      0.310
+    MED_INC           -0.008      0.005     -1.738      0.082
+    HOME               0.014      0.023      0.621      0.535
+    FD                -0.446      0.645     -0.692      0.489
+    KIDS              -0.008      0.143     -0.055      0.956
+    VEH_HH            -0.436      0.327     -1.334      0.182
+    AGE_1             -0.684      0.682     -1.003      0.316
+    AGE_2             -0.848      0.633     -1.339      0.181
+    AGE_3             -1.240      0.552     -2.246      0.025
+    AGE_4             -0.826      0.524     -1.575      0.115
+    FEM                0.280      0.253      1.109      0.268
+    WHITE             -0.510      0.411     -1.242      0.214
+    ASIAN             -0.430      0.476     -0.903      0.366
+    HISPANIC          -0.951      0.696     -1.365      0.172
+    BLACK             -1.373      1.064     -1.290      0.197
+    INC_1              0.247      0.450      0.550      0.583
+    INC_2              0.051      0.354      0.144      0.885
+    INC_3              0.017      0.328      0.051      0.959
+    FULLTM             0.131      0.404      0.325      0.745
+    PARTTM            -0.144      0.550     -0.261      0.794
+    HOMEM              1.023      0.629      1.626      0.104
+
+ Intercepts
+    C#1                0.339      0.458      0.738      0.460
+    C#2                2.521      0.347      7.269      0.000
+    C#4               -0.052      0.770     -0.067      0.947
+
+
+ODDS RATIO FOR THE ALTERNATIVE PARAMETERIZATIONS FOR THE CATEGORICAL LATENT VARIABLE REGRESSION
+
+                                                95% C.I.
+                    Estimate       S.E.  Lower 2.5% Upper 2.5%
+
+Parameterization using Reference Class 1
+
+ C#2      ON
+    EMPL               0.995      0.004      0.988      1.003
+    MED_INC            1.000      0.002      0.995      1.004
+    HOME               0.985      0.010      0.967      1.004
+    FD                 0.815      0.233      0.466      1.426
+    KIDS               0.822      0.055      0.721      0.938
+    VEH_HH             0.757      0.088      0.603      0.951
+    AGE_1              0.806      0.231      0.459      1.415
+    AGE_2              0.872      0.269      0.477      1.596
+    AGE_3              0.705      0.154      0.459      1.083
+    AGE_4              0.823      0.185      0.530      1.279
+    FEM                0.967      0.103      0.785      1.191
+    WHITE              0.902      0.183      0.606      1.341
+    ASIAN              1.223      0.286      0.773      1.936
+    HISPANIC           0.581      0.156      0.343      0.983
+    BLACK              1.000      0.359      0.495      2.020
+    INC_1              0.830      0.170      0.556      1.240
+    INC_2              0.986      0.147      0.737      1.319
+    INC_3              0.926      0.121      0.717      1.196
+    FULLTM             1.220      0.185      0.906      1.644
+    PARTTM             1.171      0.277      0.737      1.861
+    HOMEM              1.070      0.342      0.572      2.002
+
+ C#3      ON
+    EMPL               0.990      0.004      0.981      0.999
+    MED_INC            1.004      0.002      0.999      1.009
+    HOME               0.995      0.011      0.974      1.016
+    FD                 1.659      0.529      0.888      3.100
+    KIDS               0.859      0.072      0.730      1.012
+    VEH_HH             0.829      0.122      0.621      1.105
+    AGE_1              1.569      0.615      0.728      3.383
+    AGE_2              1.855      0.724      0.864      3.986
+    AGE_3              1.339      0.415      0.730      2.457
+    AGE_4              1.339      0.423      0.721      2.486
+    FEM                0.847      0.112      0.654      1.097
+    WHITE              0.901      0.219      0.559      1.450
+    ASIAN              1.086      0.306      0.625      1.888
+    HISPANIC           0.778      0.250      0.414      1.460
+    BLACK              0.911      0.392      0.392      2.116
+    INC_1              0.902      0.231      0.546      1.490
+    INC_2              1.149      0.212      0.800      1.648
+    INC_3              1.086      0.176      0.791      1.492
+    FULLTM             1.573      0.314      1.064      2.326
+    PARTTM             1.726      0.499      0.979      3.041
+    HOMEM              1.220      0.510      0.538      2.768
+
+ C#4      ON
+    EMPL               0.999      0.009      0.982      1.016
+    MED_INC            0.996      0.005      0.986      1.005
+    HOME               1.009      0.023      0.964      1.055
+    FD                 1.062      0.703      0.290      3.885
+    KIDS               0.853      0.121      0.645      1.126
+    VEH_HH             0.536      0.176      0.281      1.021
+    AGE_1              0.792      0.525      0.216      2.906
+    AGE_2              0.795      0.506      0.228      2.768
+    AGE_3              0.387      0.208      0.136      1.107
+    AGE_4              0.586      0.298      0.216      1.590
+    FEM                1.121      0.287      0.679      1.851
+    WHITE              0.541      0.230      0.235      1.243
+    ASIAN              0.706      0.346      0.270      1.846
+    HISPANIC           0.301      0.213      0.075      1.204
+    BLACK              0.231      0.249      0.028      1.907
+    INC_1              1.155      0.523      0.476      2.805
+    INC_2              1.209      0.431      0.601      2.433
+    INC_3              1.105      0.365      0.578      2.112
+    FULLTM             1.794      0.721      0.816      3.942
+    PARTTM             1.495      0.832      0.502      4.448
+    HOMEM              3.395      2.126      0.995     11.586
+
+Parameterization using Reference Class 2
+
+ C#1      ON
+    EMPL               1.005      0.004      0.997      1.012
+    MED_INC            1.000      0.002      0.996      1.005
+    HOME               1.015      0.010      0.996      1.034
+    FD                 1.227      0.350      0.701      2.147
+    KIDS               1.216      0.082      1.066      1.387
+    VEH_HH             1.321      0.153      1.052      1.658
+    AGE_1              1.240      0.356      0.707      2.178
+    AGE_2              1.147      0.354      0.626      2.098
+    AGE_3              1.418      0.311      0.923      2.179
+    AGE_4              1.215      0.273      0.782      1.888
+    FEM                1.034      0.110      0.840      1.274
+    WHITE              1.109      0.225      0.746      1.649
+    ASIAN              0.817      0.191      0.517      1.294
+    HISPANIC           1.722      0.462      1.017      2.913
+    BLACK              1.000      0.358      0.495      2.019
+    INC_1              1.205      0.247      0.806      1.799
+    INC_2              1.014      0.151      0.758      1.358
+    INC_3              1.080      0.141      0.836      1.394
+    FULLTM             0.820      0.125      0.608      1.104
+    PARTTM             0.854      0.202      0.537      1.358
+    HOMEM              0.935      0.299      0.500      1.749
+
+ C#3      ON
+    EMPL               0.995      0.003      0.988      1.001
+    MED_INC            1.004      0.002      1.001      1.007
+    HOME               1.010      0.009      0.993      1.027
+    FD                 2.036      0.494      1.265      3.276
+    KIDS               1.045      0.073      0.912      1.197
+    VEH_HH             1.094      0.129      0.868      1.380
+    AGE_1              1.946      0.639      1.022      3.705
+    AGE_2              2.127      0.639      1.180      3.835
+    AGE_3              1.899      0.487      1.150      3.138
+    AGE_4              1.627      0.422      0.979      2.704
+    FEM                0.876      0.089      0.718      1.069
+    WHITE              0.999      0.182      0.698      1.428
+    ASIAN              0.888      0.186      0.589      1.339
+    HISPANIC           1.339      0.341      0.813      2.205
+    BLACK              0.911      0.294      0.484      1.714
+    INC_1              1.087      0.218      0.733      1.611
+    INC_2              1.165      0.166      0.881      1.541
+    INC_3              1.173      0.148      0.917      1.501
+    FULLTM             1.289      0.210      0.938      1.773
+    PARTTM             1.474      0.328      0.952      2.281
+    HOMEM              1.141      0.385      0.588      2.211
+
+ C#4      ON
+    EMPL               1.003      0.008      0.987      1.020
+    MED_INC            0.996      0.005      0.987      1.005
+    HOME               1.024      0.023      0.981      1.069
+    FD                 1.303      0.817      0.381      4.454
+    KIDS               1.037      0.138      0.798      1.347
+    VEH_HH             0.708      0.223      0.382      1.312
+    AGE_1              0.982      0.617      0.287      3.363
+    AGE_2              0.911      0.535      0.288      2.881
+    AGE_3              0.550      0.279      0.203      1.487
+    AGE_4              0.713      0.340      0.280      1.814
+    FEM                1.160      0.279      0.724      1.858
+    WHITE              0.599      0.233      0.280      1.285
+    ASIAN              0.578      0.260      0.239      1.395
+    HISPANIC           0.517      0.349      0.138      1.944
+    BLACK              0.231      0.240      0.030      1.774
+    INC_1              1.391      0.586      0.609      3.178
+    INC_2              1.226      0.413      0.633      2.374
+    INC_3              1.193      0.374      0.646      2.204
+    FULLTM             1.470      0.562      0.695      3.112
+    PARTTM             1.276      0.668      0.458      3.560
+    HOMEM              3.173      1.822      1.030      9.780
+
+Parameterization using Reference Class 3
+
+ C#1      ON
+    EMPL               1.010      0.005      1.001      1.019
+    MED_INC            0.996      0.002      0.992      1.001
+    HOME               1.005      0.011      0.984      1.027
+    FD                 0.603      0.192      0.323      1.126
+    KIDS               1.164      0.097      0.988      1.370
+    VEH_HH             1.207      0.177      0.905      1.610
+    AGE_1              0.637      0.250      0.296      1.374
+    AGE_2              0.539      0.210      0.251      1.158
+    AGE_3              0.747      0.231      0.407      1.370
+    AGE_4              0.747      0.236      0.402      1.387
+    FEM                1.181      0.156      0.911      1.529
+    WHITE              1.110      0.270      0.689      1.788
+    ASIAN              0.921      0.260      0.530      1.601
+    HISPANIC           1.286      0.413      0.685      2.413
+    BLACK              1.098      0.472      0.473      2.550
+    INC_1              1.108      0.284      0.671      1.831
+    INC_2              0.871      0.160      0.607      1.249
+    INC_3              0.920      0.149      0.670      1.264
+    FULLTM             0.636      0.127      0.430      0.940
+    PARTTM             0.579      0.168      0.329      1.021
+    HOMEM              0.819      0.342      0.361      1.859
+
+ C#2      ON
+    EMPL               1.005      0.004      0.999      1.012
+    MED_INC            0.996      0.002      0.993      0.999
+    HOME               0.991      0.008      0.974      1.007
+    FD                 0.491      0.119      0.305      0.791
+    KIDS               0.957      0.066      0.835      1.096
+    VEH_HH             0.914      0.108      0.725      1.152
+    AGE_1              0.514      0.169      0.270      0.978
+    AGE_2              0.470      0.141      0.261      0.847
+    AGE_3              0.526      0.135      0.319      0.870
+    AGE_4              0.615      0.159      0.370      1.021
+    FEM                1.141      0.116      0.935      1.393
+    WHITE              1.001      0.183      0.700      1.432
+    ASIAN              1.126      0.236      0.747      1.699
+    HISPANIC           0.747      0.190      0.453      1.230
+    BLACK              1.098      0.355      0.583      2.068
+    INC_1              0.920      0.185      0.621      1.364
+    INC_2              0.858      0.122      0.649      1.135
+    INC_3              0.853      0.107      0.666      1.091
+    FULLTM             0.776      0.126      0.564      1.067
+    PARTTM             0.679      0.151      0.438      1.050
+    HOMEM              0.877      0.296      0.452      1.699
+
+ C#4      ON
+    EMPL               1.009      0.009      0.992      1.026
+    MED_INC            0.992      0.005      0.983      1.001
+    HOME               1.014      0.023      0.970      1.060
+    FD                 0.640      0.413      0.181      2.267
+    KIDS               0.992      0.142      0.750      1.313
+    VEH_HH             0.647      0.211      0.341      1.227
+    AGE_1              0.505      0.344      0.133      1.921
+    AGE_2              0.428      0.271      0.124      1.482
+    AGE_3              0.289      0.160      0.098      0.854
+    AGE_4              0.438      0.230      0.157      1.224
+    FEM                1.323      0.335      0.806      2.172
+    WHITE              0.600      0.247      0.268      1.344
+    ASIAN              0.651      0.310      0.256      1.654
+    HISPANIC           0.386      0.269      0.099      1.513
+    BLACK              0.253      0.270      0.031      2.040
+    INC_1              1.280      0.576      0.530      3.091
+    INC_2              1.052      0.373      0.526      2.108
+    INC_3              1.017      0.334      0.535      1.934
+    FULLTM             1.140      0.461      0.517      2.517
+    PARTTM             0.866      0.476      0.295      2.545
+    HOMEM              2.782      1.751      0.810      9.551
+
+
+TECHNICAL 7 OUTPUT
+
+
+     SAMPLE STATISTICS WEIGHTED BY ESTIMATED CLASS PROBABILITIES FOR CLASS 1
+
+
+           Means
+              FF            PRICE         RATING        DIV           TT
+              ________      ________      ________      ________      ________
+                0.499         1.438         3.156         2.346         1.403
+
+
+           Means
+              R_NONR        EMPL          MED_INC       HOME          FD
+              ________      ________      ________      ________      ________
+                0.533        11.093        84.024         4.393         0.041
+
+
+           Means
+              KIDS          VEH_HH        AGE_1         AGE_2         AGE_3
+              ________      ________      ________      ________      ________
+                0.529         0.710         0.081         0.052         0.579
+
+
+           Means
+              AGE_4         FEM           WHITE         ASIAN         HISPANIC
+              ________      ________      ________      ________      ________
+                0.202         0.510         0.675         0.137         0.084
+
+
+           Means
+              BLACK         INC_1         INC_2         INC_3         FULLTM
+              ________      ________      ________      ________      ________
+                0.030         0.106         0.233         0.384         0.590
+
+
+           Means
+              PARTTM        HOMEM
+              ________      ________
+                0.069         0.034
+
+
+           Covariances
+              FF            PRICE         RATING        DIV           TT
+              ________      ________      ________      ________      ________
+ FF             0.002
+ PRICE         -0.001         0.127
+ RATING        -0.002         0.046         0.288
+ DIV           -0.009        -0.025        -0.015         0.871
+ TT             0.002         0.004        -0.014        -0.104         0.909
+ R_NONR         0.000         0.013        -0.003        -0.029         0.034
+ EMPL          -0.009         0.273        -0.239        -1.563        -1.572
+ MED_INC        0.036         0.653        -0.084        -0.447        -0.980
+ HOME           0.004        -0.012         0.003         0.059         1.692
+ FD            -0.001         0.003        -0.005         0.019         0.004
+ KIDS          -0.002        -0.056        -0.031         0.074         0.041
+ VEH_HH         0.002         0.004        -0.023        -0.003         0.035
+ AGE_1         -0.001        -0.005         0.002        -0.009         0.004
+ AGE_2          0.000         0.001         0.001         0.012        -0.005
+ AGE_3         -0.001         0.017         0.018         0.029        -0.020
+ AGE_4          0.001        -0.016        -0.021        -0.006         0.014
+ FEM            0.002         0.000        -0.006         0.033        -0.005
+ WHITE          0.000        -0.007        -0.013         0.024        -0.025
+ ASIAN          0.000         0.001         0.005        -0.017         0.002
+ HISPANIC       0.000         0.006         0.001        -0.001        -0.001
+ BLACK          0.000        -0.001         0.003         0.010         0.008
+ INC_1          0.000        -0.005        -0.009         0.011        -0.007
+ INC_2         -0.002        -0.009         0.006         0.030         0.029
+ INC_3          0.001         0.010         0.007        -0.025        -0.026
+ FULLTM         0.000         0.003         0.011         0.002        -0.024
+ PARTTM         0.000        -0.003        -0.009         0.019        -0.009
+ HOMEM          0.000        -0.001        -0.007         0.022        -0.002
+
+
+           Covariances
+              R_NONR        EMPL          MED_INC       HOME          FD
+              ________      ________      ________      ________      ________
+ R_NONR         0.319
+ EMPL           0.703       262.422
+ MED_INC       -0.199        29.086       783.555
+ HOME          -0.299         3.073        -6.862        33.562
+ FD            -0.009        -0.204        -0.695         0.016         0.039
+ KIDS          -0.121        -2.575        -2.070         0.061        -0.003
+ VEH_HH        -0.014        -0.765         0.327         0.479         0.009
+ AGE_1         -0.017        -0.535        -0.109        -0.039        -0.003
+ AGE_2          0.005        -0.216        -0.557        -0.059         0.002
+ AGE_3          0.011         1.136         0.812        -0.078        -0.003
+ AGE_4          0.003        -0.451        -0.210         0.061         0.001
+ FEM           -0.008        -0.413         0.378        -0.090         0.001
+ WHITE          0.000        -0.218         0.744        -0.196         0.005
+ ASIAN         -0.002         0.242        -0.051         0.329        -0.003
+ HISPANIC      -0.005         0.122        -0.037        -0.190        -0.001
+ BLACK         -0.001        -0.053         0.002         0.090         0.001
+ INC_1          0.010        -0.031        -0.722        -0.088         0.000
+ INC_2         -0.004        -0.184        -1.694         0.132         0.010
+ INC_3         -0.023        -0.321         0.014        -0.008        -0.001
+ FULLTM         0.015         1.070         1.983         0.075        -0.003
+ PARTTM         0.004        -0.121        -0.583        -0.083         0.001
+ HOMEM         -0.002        -0.173        -0.370        -0.013         0.003
+
+
+           Covariances
+              KIDS          VEH_HH        AGE_1         AGE_2         AGE_3
+              ________      ________      ________      ________      ________
+ KIDS           1.147
+ VEH_HH        -0.142         0.214
+ AGE_1          0.165        -0.023         0.075
+ AGE_2         -0.001        -0.013        -0.004         0.049
+ AGE_3         -0.067        -0.034        -0.047        -0.030         0.244
+ AGE_4         -0.052         0.045        -0.016        -0.010        -0.117
+ FEM            0.017         0.011         0.006         0.002        -0.006
+ WHITE         -0.039         0.025        -0.008        -0.003        -0.017
+ ASIAN         -0.016        -0.010         0.000        -0.003         0.014
+ HISPANIC       0.035        -0.012         0.008         0.000         0.007
+ BLACK         -0.009         0.003        -0.002         0.003         0.000
+ INC_1         -0.019        -0.010        -0.004         0.007        -0.012
+ INC_2          0.005        -0.018        -0.004         0.016        -0.009
+ INC_3         -0.043         0.024        -0.016        -0.013         0.027
+ FULLTM        -0.113         0.006        -0.048        -0.011         0.109
+ PARTTM        -0.017        -0.002        -0.006         0.009         0.001
+ HOMEM          0.031        -0.009        -0.003        -0.002         0.008
+
+
+           Covariances
+              AGE_4         FEM           WHITE         ASIAN         HISPANIC
+              ________      ________      ________      ________      ________
+ AGE_4          0.161
+ FEM            0.009         0.250
+ WHITE          0.019         0.002         0.219
+ ASIAN         -0.006        -0.015        -0.093         0.118
+ HISPANIC      -0.015         0.007        -0.057        -0.012         0.077
+ BLACK          0.000         0.002        -0.020        -0.004        -0.003
+ INC_1          0.013         0.022         0.004        -0.006        -0.002
+ INC_2         -0.006         0.000        -0.023        -0.003         0.006
+ INC_3         -0.008        -0.007         0.024        -0.005        -0.006
+ FULLTM         0.000        -0.030         0.001         0.003        -0.002
+ PARTTM        -0.003         0.008        -0.001         0.004        -0.004
+ HOMEM          0.000         0.015         0.005        -0.003         0.001
+
+
+           Covariances
+              BLACK         INC_1         INC_2         INC_3         FULLTM
+              ________      ________      ________      ________      ________
+ BLACK          0.029
+ INC_1          0.001         0.095
+ INC_2          0.004        -0.025         0.179
+ INC_3         -0.008        -0.041        -0.090         0.237
+ FULLTM         0.008        -0.032        -0.006         0.017         0.242
+ PARTTM        -0.002         0.008         0.001         0.006        -0.041
+ HOMEM         -0.001         0.005        -0.002         0.002        -0.020
+
+
+           Covariances
+              PARTTM        HOMEM
+              ________      ________
+ PARTTM         0.064
+ HOMEM         -0.002         0.033
+
+
+     SAMPLE STATISTICS WEIGHTED BY ESTIMATED CLASS PROBABILITIES FOR CLASS 2
+
+
+           Means
+              FF            PRICE         RATING        DIV           TT
+              ________      ________      ________      ________      ________
+                0.005         1.823         3.792         2.762         1.356
+
+
+           Means
+              R_NONR        EMPL          MED_INC       HOME          FD
+              ________      ________      ________      ________      ________
+                0.522        10.654        84.129         3.891         0.030
+
+
+           Means
+              KIDS          VEH_HH        AGE_1         AGE_2         AGE_3
+              ________      ________      ________      ________      ________
+                0.379         0.669         0.060         0.063         0.569
+
+
+           Means
+              AGE_4         FEM           WHITE         ASIAN         HISPANIC
+              ________      ________      ________      ________      ________
+                0.210         0.496         0.658         0.181         0.052
+
+
+           Means
+              BLACK         INC_1         INC_2         INC_3         FULLTM
+              ________      ________      ________      ________      ________
+                0.032         0.100         0.245         0.371         0.620
+
+
+           Means
+              PARTTM        HOMEM
+              ________      ________
+                0.073         0.028
+
+
+           Covariances
+              FF            PRICE         RATING        DIV           TT
+              ________      ________      ________      ________      ________
+ FF             0.000
+ PRICE          0.000         0.150
+ RATING         0.000         0.011         0.186
+ DIV            0.012         0.059         0.045         2.364
+ TT            -0.002        -0.007        -0.020        -0.279         0.805
+ R_NONR         0.000         0.007        -0.006        -0.021         0.063
+ EMPL          -0.006        -0.149        -0.223        -1.506        -0.575
+ MED_INC       -0.028         0.755         0.430         0.686        -0.202
+ HOME          -0.004         0.026        -0.075        -0.541         1.414
+ FD             0.000         0.000        -0.005        -0.004         0.005
+ KIDS           0.000        -0.008        -0.030        -0.060         0.014
+ VEH_HH         0.000         0.004        -0.005        -0.048         0.014
+ AGE_1          0.000         0.000        -0.002        -0.012         0.004
+ AGE_2          0.000        -0.002         0.000        -0.003         0.002
+ AGE_3          0.000         0.004         0.005         0.091        -0.030
+ AGE_4          0.000         0.002        -0.006        -0.008        -0.002
+ FEM            0.000         0.005         0.000        -0.013        -0.010
+ WHITE          0.000        -0.006         0.004        -0.040         0.018
+ ASIAN          0.000         0.006        -0.003         0.032        -0.015
+ HISPANIC       0.000         0.000         0.000         0.001        -0.006
+ BLACK          0.000         0.000        -0.003         0.006        -0.002
+ INC_1          0.000        -0.005        -0.002        -0.005         0.001
+ INC_2          0.000        -0.005        -0.002        -0.023         0.016
+ INC_3          0.000         0.000        -0.002        -0.011        -0.008
+ FULLTM         0.000         0.003        -0.007         0.085        -0.044
+ PARTTM         0.000         0.000         0.002         0.005         0.006
+ HOMEM          0.000         0.000         0.000        -0.001         0.004
+
+
+           Covariances
+              R_NONR        EMPL          MED_INC       HOME          FD
+              ________      ________      ________      ________      ________
+ R_NONR         0.326
+ EMPL           0.651       216.461
+ MED_INC       -0.343        31.247       761.316
+ HOME          -0.105         6.066        -7.007        28.070
+ FD            -0.002        -0.141        -0.443         0.067         0.029
+ KIDS          -0.056        -1.275         0.172         0.257         0.015
+ VEH_HH         0.000        -0.517         0.486         0.315         0.004
+ AGE_1         -0.010        -0.307         0.020        -0.014         0.002
+ AGE_2         -0.002        -0.047        -0.632        -0.026         0.000
+ AGE_3          0.006         0.626         0.577        -0.128        -0.004
+ AGE_4         -0.002        -0.117         0.105         0.126         0.000
+ FEM           -0.019        -0.437         0.277        -0.081        -0.002
+ WHITE          0.000        -0.266         0.598        -0.094         0.002
+ ASIAN          0.000         0.168        -0.158         0.064        -0.004
+ HISPANIC      -0.003         0.047        -0.144        -0.004         0.000
+ BLACK          0.000         0.064        -0.272         0.013         0.002
+ INC_1          0.002        -0.292        -0.889        -0.073        -0.001
+ INC_2          0.006        -0.322        -1.101         0.036         0.005
+ INC_3         -0.013         0.161        -0.075         0.037         0.000
+ FULLTM         0.006         1.402         1.055         0.033        -0.002
+ PARTTM        -0.007        -0.336        -0.642        -0.041         0.000
+ HOMEM         -0.001        -0.080         0.028         0.004         0.000
+
+
+           Covariances
+              KIDS          VEH_HH        AGE_1         AGE_2         AGE_3
+              ________      ________      ________      ________      ________
+ KIDS           0.652
+ VEH_HH        -0.075         0.216
+ AGE_1          0.091        -0.012         0.056
+ AGE_2         -0.007        -0.008        -0.004         0.059
+ AGE_3         -0.029        -0.029        -0.034        -0.036         0.245
+ AGE_4         -0.019         0.029        -0.013        -0.013        -0.120
+ FEM           -0.009         0.007        -0.001         0.004        -0.011
+ WHITE         -0.011         0.026         0.000        -0.007        -0.038
+ ASIAN          0.010        -0.023         0.000         0.004         0.023
+ HISPANIC      -0.003         0.001         0.000         0.002         0.004
+ BLACK          0.004        -0.002         0.002         0.001         0.001
+ INC_1         -0.018        -0.013        -0.003         0.012        -0.013
+ INC_2         -0.011        -0.009        -0.001         0.006        -0.006
+ INC_3         -0.003         0.017         0.000        -0.007         0.003
+ FULLTM        -0.068         0.003        -0.037        -0.005         0.095
+ PARTTM         0.000        -0.001        -0.004         0.010        -0.004
+ HOMEM          0.019        -0.004        -0.002        -0.001         0.005
+
+
+           Covariances
+              AGE_4         FEM           WHITE         ASIAN         HISPANIC
+              ________      ________      ________      ________      ________
+ AGE_4          0.166
+ FEM            0.008         0.250
+ WHITE          0.023         0.006         0.225
+ ASIAN         -0.015        -0.006        -0.119         0.148
+ HISPANIC      -0.003         0.001        -0.034        -0.009         0.049
+ BLACK         -0.001         0.001        -0.021        -0.006        -0.002
+ INC_1          0.001         0.006        -0.002         0.002         0.001
+ INC_2         -0.004         0.016        -0.006        -0.002         0.002
+ INC_3          0.005        -0.010         0.004        -0.006        -0.001
+ FULLTM         0.001        -0.028        -0.010         0.005         0.001
+ PARTTM         0.002         0.013        -0.003        -0.001         0.002
+ HOMEM         -0.001         0.011        -0.004         0.004        -0.001
+
+
+           Covariances
+              BLACK         INC_1         INC_2         INC_3         FULLTM
+              ________      ________      ________      ________      ________
+ BLACK          0.031
+ INC_1          0.001         0.090
+ INC_2          0.003        -0.025         0.185
+ INC_3         -0.002        -0.037        -0.091         0.233
+ FULLTM         0.002        -0.035        -0.008         0.021         0.236
+ PARTTM         0.000         0.020         0.001        -0.010        -0.045
+ HOMEM          0.000        -0.001         0.000        -0.002        -0.017
+
+
+           Covariances
+              PARTTM        HOMEM
+              ________      ________
+ PARTTM         0.068
+ HOMEM         -0.002         0.027
+
+
+     SAMPLE STATISTICS WEIGHTED BY ESTIMATED CLASS PROBABILITIES FOR CLASS 3
+
+
+           Means
+              FF            PRICE         RATING        DIV           TT
+              ________      ________      ________      ________      ________
+                0.223         1.696         3.637         4.187         1.176
+
+
+           Means
+              R_NONR        EMPL          MED_INC       HOME          FD
+              ________      ________      ________      ________      ________
+                0.511         9.784        86.002         4.120         0.058
+
+
+           Means
+              KIDS          VEH_HH        AGE_1         AGE_2         AGE_3
+              ________      ________      ________      ________      ________
+                0.422         0.679         0.059         0.075         0.621
+
+
+           Means
+              AGE_4         FEM           WHITE         ASIAN         HISPANIC
+              ________      ________      ________      ________      ________
+                0.196         0.466         0.651         0.163         0.071
+
+
+           Means
+              BLACK         INC_1         INC_2         INC_3         FULLTM
+              ________      ________      ________      ________      ________
+                0.031         0.091         0.256         0.395         0.677
+
+
+           Means
+              PARTTM        HOMEM
+              ________      ________
+                0.087         0.026
+
+
+           Covariances
+              FF            PRICE         RATING        DIV           TT
+              ________      ________      ________      ________      ________
+ FF             0.004
+ PRICE         -0.005         0.162
+ RATING        -0.006         0.022         0.192
+ DIV           -0.035         0.060         0.075         1.777
+ TT             0.002         0.005        -0.005        -0.054         0.362
+ R_NONR         0.000         0.017        -0.004        -0.041        -0.002
+ EMPL           0.006         0.141        -0.015        -1.393        -0.798
+ MED_INC        0.058        -0.122         0.312         0.091         0.258
+ HOME           0.035         0.097        -0.104        -0.334         0.503
+ FD            -0.001        -0.005        -0.008        -0.010         0.008
+ KIDS           0.002        -0.038        -0.060        -0.087        -0.035
+ VEH_HH         0.004         0.001        -0.012        -0.019         0.022
+ AGE_1         -0.001        -0.004        -0.009        -0.008        -0.002
+ AGE_2          0.000         0.006         0.007        -0.001         0.005
+ AGE_3         -0.002         0.009         0.016         0.085        -0.022
+ AGE_4          0.001        -0.013        -0.012        -0.044         0.007
+ FEM           -0.001        -0.008         0.003         0.023         0.006
+ WHITE          0.000        -0.003        -0.017         0.004        -0.009
+ ASIAN         -0.001        -0.001         0.008         0.037        -0.004
+ HISPANIC       0.001        -0.001        -0.002        -0.018         0.011
+ BLACK          0.000         0.000         0.003         0.008         0.001
+ INC_1          0.000         0.001         0.006        -0.020         0.017
+ INC_2          0.000        -0.006        -0.005         0.001         0.006
+ INC_3          0.001         0.000        -0.016         0.018        -0.007
+ FULLTM         0.000         0.008         0.017         0.070        -0.014
+ PARTTM         0.000         0.001        -0.002        -0.008        -0.007
+ HOMEM          0.000        -0.005        -0.005         0.005        -0.004
+
+
+           Covariances
+              R_NONR        EMPL          MED_INC       HOME          FD
+              ________      ________      ________      ________      ________
+ R_NONR         0.432
+ EMPL           1.810       171.537
+ MED_INC       -0.069        31.738       525.281
+ HOME          -0.008         1.050        -9.159        20.889
+ FD            -0.003        -0.151        -0.994         0.053         0.055
+ KIDS          -0.036        -1.776         0.242        -0.036         0.023
+ VEH_HH        -0.027        -0.677        -0.486         0.407         0.008
+ AGE_1         -0.003        -0.315        -0.363        -0.047         0.007
+ AGE_2          0.004         0.010        -0.348         0.023         0.001
+ AGE_3         -0.010         0.634         0.209        -0.212        -0.010
+ AGE_4          0.010        -0.204         0.357         0.168         0.001
+ FEM           -0.023        -0.529        -0.976        -0.020         0.003
+ WHITE         -0.003        -0.350         1.109         0.098         0.001
+ ASIAN         -0.005         0.362        -0.378        -0.003        -0.001
+ HISPANIC       0.011         0.032        -0.122        -0.025        -0.002
+ BLACK         -0.003        -0.117        -0.310        -0.022         0.002
+ INC_1          0.006        -0.251        -0.767        -0.060         0.000
+ INC_2         -0.017        -0.575        -1.459         0.034         0.013
+ INC_3         -0.002         0.223         0.690         0.064        -0.002
+ FULLTM         0.019         0.862         1.312        -0.025        -0.013
+ PARTTM        -0.005        -0.185        -0.554        -0.059        -0.001
+ HOMEM         -0.003        -0.032         0.059        -0.006         0.002
+
+
+           Covariances
+              KIDS          VEH_HH        AGE_1         AGE_2         AGE_3
+              ________      ________      ________      ________      ________
+ KIDS           0.727
+ VEH_HH        -0.073         0.206
+ AGE_1          0.075        -0.009         0.055
+ AGE_2         -0.027        -0.012        -0.004         0.070
+ AGE_3         -0.027        -0.028        -0.036        -0.047         0.235
+ AGE_4         -0.001         0.028        -0.011        -0.015        -0.122
+ FEM            0.025        -0.003         0.001        -0.001         0.009
+ WHITE          0.006         0.024         0.006        -0.016        -0.017
+ ASIAN         -0.011        -0.013        -0.003         0.008         0.003
+ HISPANIC       0.008        -0.004        -0.001         0.005         0.006
+ BLACK         -0.001        -0.006        -0.002         0.006         0.000
+ INC_1         -0.027        -0.014        -0.002         0.014        -0.013
+ INC_2          0.009        -0.014         0.003         0.005         0.003
+ INC_3         -0.026         0.029        -0.004        -0.012         0.031
+ FULLTM        -0.066        -0.003        -0.040        -0.003         0.076
+ PARTTM        -0.013        -0.009        -0.005         0.012        -0.004
+ HOMEM          0.039        -0.002        -0.002        -0.002         0.002
+
+
+           Covariances
+              AGE_4         FEM           WHITE         ASIAN         HISPANIC
+              ________      ________      ________      ________      ________
+ AGE_4          0.158
+ FEM           -0.012         0.249
+ WHITE          0.018         0.004         0.227
+ ASIAN         -0.007         0.002        -0.106         0.137
+ HISPANIC      -0.009         0.000        -0.046        -0.012         0.066
+ BLACK         -0.003         0.002        -0.020        -0.005        -0.002
+ INC_1          0.002         0.006        -0.003         0.001         0.006
+ INC_2         -0.010         0.003        -0.008        -0.007        -0.004
+ INC_3         -0.011        -0.009        -0.007         0.003         0.006
+ FULLTM        -0.003        -0.035        -0.007        -0.005         0.005
+ PARTTM        -0.006         0.008        -0.009         0.006        -0.002
+ HOMEM          0.001         0.009         0.003         0.000        -0.002
+
+
+           Covariances
+              BLACK         INC_1         INC_2         INC_3         FULLTM
+              ________      ________      ________      ________      ________
+ BLACK          0.030
+ INC_1         -0.003         0.083
+ INC_2          0.013        -0.023         0.190
+ INC_3         -0.002        -0.036        -0.101         0.239
+ FULLTM         0.005        -0.032        -0.012         0.033         0.219
+ PARTTM        -0.001         0.016         0.005        -0.006        -0.059
+ HOMEM         -0.001        -0.002         0.005        -0.007        -0.017
+
+
+           Covariances
+              PARTTM        HOMEM
+              ________      ________
+ PARTTM         0.079
+ HOMEM         -0.002         0.025
+
+
+     SAMPLE STATISTICS WEIGHTED BY ESTIMATED CLASS PROBABILITIES FOR CLASS 4
+
+
+           Means
+              FF            PRICE         RATING        DIV           TT
+              ________      ________      ________      ________      ________
+                0.996         1.144         2.491         1.182         1.523
+
+
+           Means
+              R_NONR        EMPL          MED_INC       HOME          FD
+              ________      ________      ________      ________      ________
+                0.794        11.245        80.271         4.575         0.041
+
+
+           Means
+              KIDS          VEH_HH        AGE_1         AGE_2         AGE_3
+              ________      ________      ________      ________      ________
+                0.457         0.604         0.068         0.096         0.509
+
+
+           Means
+              AGE_4         FEM           WHITE         ASIAN         HISPANIC
+              ________      ________      ________      ________      ________
+                0.217         0.541         0.637         0.178         0.043
+
+
+           Means
+              BLACK         INC_1         INC_2         INC_3         FULLTM
+              ________      ________      ________      ________      ________
+                0.014         0.123         0.276         0.368         0.590
+
+
+           Means
+              PARTTM        HOMEM
+              ________      ________
+                0.082         0.068
+
+
+           Covariances
+              FF            PRICE         RATING        DIV           TT
+              ________      ________      ________      ________      ________
+ FF             0.001
+ PRICE          0.001         0.079
+ RATING         0.000         0.085         0.388
+ DIV           -0.004         0.015         0.024         0.154
+ TT             0.002         0.084         0.053        -0.065         1.542
+ R_NONR         0.003         0.001        -0.064         0.001         0.235
+ EMPL           0.022         0.487        -1.072         1.137        -4.675
+ MED_INC        0.064         0.696         0.442         0.717         1.363
+ HOME           0.007         0.148         0.373         0.037         2.443
+ FD             0.000        -0.006        -0.004         0.006        -0.019
+ KIDS           0.000        -0.018         0.024        -0.018         0.072
+ VEH_HH        -0.002         0.011        -0.003         0.006        -0.065
+ AGE_1          0.000        -0.003         0.036         0.001         0.063
+ AGE_2          0.000         0.014        -0.007         0.010         0.071
+ AGE_3          0.001        -0.005        -0.031         0.022        -0.151
+ AGE_4         -0.002        -0.011        -0.016        -0.027         0.018
+ FEM            0.000         0.011         0.043        -0.033        -0.033
+ WHITE          0.000        -0.003         0.027         0.029        -0.125
+ ASIAN          0.001         0.009         0.015        -0.032         0.021
+ HISPANIC       0.000        -0.006        -0.017         0.011        -0.013
+ BLACK          0.000        -0.002        -0.016        -0.002        -0.013
+ INC_1          0.000         0.017        -0.002         0.005        -0.008
+ INC_2          0.000        -0.005        -0.006        -0.004        -0.004
+ INC_3         -0.002        -0.012         0.035         0.014        -0.057
+ FULLTM        -0.002        -0.023        -0.051         0.020        -0.164
+ PARTTM         0.000         0.036         0.047         0.012         0.104
+ HOMEM          0.000         0.004        -0.013        -0.012        -0.024
+
+
+           Covariances
+              R_NONR        EMPL          MED_INC       HOME          FD
+              ________      ________      ________      ________      ________
+ R_NONR         0.383
+ EMPL           1.943       256.559
+ MED_INC       -0.232        17.026       734.151
+ HOME           0.625       -11.026       -44.033        43.594
+ FD            -0.011         0.315        -0.618        -0.040         0.039
+ KIDS           0.010        -0.844        -0.972        -1.124        -0.019
+ VEH_HH         0.002        -0.927         1.260         0.377         0.016
+ AGE_1          0.009        -0.570        -0.012        -0.175        -0.003
+ AGE_2          0.013         0.080        -0.680        -0.261        -0.004
+ AGE_3         -0.035         1.460         1.368         0.125         0.006
+ AGE_4          0.012        -0.155        -0.798         0.391         0.005
+ FEM           -0.051        -2.116         1.106        -0.418        -0.009
+ WHITE         -0.056        -0.193        -1.068         0.820         0.015
+ ASIAN         -0.001        -0.260         0.872        -0.370        -0.007
+ HISPANIC      -0.010         0.459        -0.480        -0.111        -0.002
+ BLACK         -0.009        -0.137        -0.362        -0.042        -0.001
+ INC_1         -0.024        -0.348        -0.567        -0.409        -0.005
+ INC_2          0.073        -0.008        -2.210         0.248         0.002
+ INC_3         -0.072        -0.776        -1.886         0.478         0.012
+ FULLTM        -0.035         1.728         1.112         0.248         0.017
+ PARTTM        -0.005        -0.104        -1.464         0.142        -0.003
+ HOMEM          0.006         0.569        -0.281        -0.150        -0.003
+
+
+           Covariances
+              KIDS          VEH_HH        AGE_1         AGE_2         AGE_3
+              ________      ________      ________      ________      ________
+ KIDS           0.691
+ VEH_HH        -0.049         0.197
+ AGE_1          0.119        -0.011         0.064
+ AGE_2         -0.016        -0.043        -0.007         0.087
+ AGE_3          0.005         0.018        -0.035        -0.049         0.250
+ AGE_4         -0.058         0.027        -0.015        -0.021        -0.111
+ FEM            0.100         0.018         0.018        -0.024         0.042
+ WHITE         -0.099         0.043        -0.044        -0.034         0.046
+ ASIAN          0.015        -0.022         0.015         0.024        -0.022
+ HISPANIC       0.040        -0.015         0.011         0.010        -0.006
+ BLACK         -0.006        -0.008        -0.001        -0.001        -0.007
+ INC_1         -0.015        -0.036        -0.008         0.043        -0.008
+ INC_2         -0.012        -0.026         0.008        -0.013        -0.029
+ INC_3         -0.045         0.057        -0.025        -0.022         0.032
+ FULLTM        -0.127         0.042        -0.040        -0.015         0.086
+ PARTTM        -0.037        -0.036        -0.006         0.033        -0.028
+ HOMEM          0.078        -0.010        -0.005        -0.007         0.006
+
+
+           Covariances
+              AGE_4         FEM           WHITE         ASIAN         HISPANIC
+              ________      ________      ________      ________      ________
+ AGE_4          0.170
+ FEM           -0.031         0.248
+ WHITE         -0.008        -0.016         0.231
+ ASIAN          0.002         0.000        -0.113         0.146
+ HISPANIC      -0.009        -0.007        -0.028        -0.008         0.042
+ BLACK          0.011         0.006        -0.009        -0.002        -0.001
+ INC_1         -0.027         0.002        -0.010         0.019         0.008
+ INC_2          0.022         0.045         0.002        -0.022        -0.010
+ INC_3          0.014        -0.044         0.060        -0.011        -0.016
+ FULLTM         0.034        -0.065         0.015        -0.009         0.004
+ PARTTM        -0.004         0.010        -0.011         0.013        -0.004
+ HOMEM          0.013         0.031        -0.016         0.002        -0.003
+
+
+           Covariances
+              BLACK         INC_1         INC_2         INC_3         FULLTM
+              ________      ________      ________      ________      ________
+ BLACK          0.013
+ INC_1         -0.002         0.108
+ INC_2          0.010        -0.034         0.200
+ INC_3         -0.005        -0.045        -0.102         0.233
+ FULLTM        -0.008        -0.045        -0.010         0.028         0.242
+ PARTTM        -0.001         0.045        -0.009        -0.017        -0.048
+ HOMEM          0.013        -0.008         0.008         0.002        -0.040
+
+
+           Covariances
+              PARTTM        HOMEM
+              ________      ________
+ PARTTM         0.075
+ HOMEM         -0.006         0.064
+
+
+     UNIVARIATE SAMPLE DISTRIBUTIONS FOR CLASS 1
+
+     Variable
+     MODE
+       Category 1        0.282
+       Category 2        0.305
+       Category 3        0.037
+       Category 4        0.377
+     PURP
+       Category 1        0.063
+       Category 2        0.389
+       Category 3        0.159
+       Category 4        0.294
+       Category 5        0.095
+     TOD
+       Category 1        0.048
+       Category 2        0.368
+       Category 3        0.342
+       Category 4        0.242
+
+
+     UNIVARIATE SAMPLE DISTRIBUTIONS FOR CLASS 2
+
+     Variable
+     MODE
+       Category 1        0.231
+       Category 2        0.430
+       Category 3        0.039
+       Category 4        0.300
+     PURP
+       Category 1        0.056
+       Category 2        0.461
+       Category 3        0.108
+       Category 4        0.281
+       Category 5        0.095
+     TOD
+       Category 1        0.060
+       Category 2        0.361
+       Category 3        0.302
+       Category 4        0.278
+
+
+     UNIVARIATE SAMPLE DISTRIBUTIONS FOR CLASS 3
+
+     Variable
+     MODE
+       Category 1        0.227
+       Category 2        0.362
+       Category 3        0.031
+       Category 4        0.380
+     PURP
+       Category 1        0.035
+       Category 2        0.512
+       Category 3        0.106
+       Category 4        0.236
+       Category 5        0.110
+     TOD
+       Category 1        0.042
+       Category 2        0.367
+       Category 3        0.299
+       Category 4        0.291
+
+
+     UNIVARIATE SAMPLE DISTRIBUTIONS FOR CLASS 4
+
+     Variable
+     MODE
+       Category 1        0.254
+       Category 2        0.356
+       Category 3        0.055
+       Category 4        0.336
+     PURP
+       Category 1        0.027
+       Category 2        0.379
+       Category 3        0.142
+       Category 4        0.329
+       Category 5        0.123
+     TOD
+       Category 1        0.055
+       Category 2        0.349
+       Category 3        0.345
+       Category 4        0.251
+
+
+PLOT INFORMATION
+
+The following plots are available:
+
+  Histograms (sample values)
+  Scatterplots (sample values)
+  Sample means
+  Estimated means, medians, modes, and percentiles
+  Sample and estimated means
+  Adjusted estimated means
+  Sample proportions, estimated and conditional estimated probabilities
+  Observed individual values
+  Estimated means and observed individual values
+  Adjusted estimated means and observed individual values
+  Adjusted estimated means and estimated individual values
+
+SAVEDATA INFORMATION
+
+
+  Save file
+    4_class_probabilities.dat
+
+  Order and format of variables
+
+    MODE           F10.3
+    PURP           F10.3
+    TOD            F10.3
+    FF             F10.3
+    PRICE          F10.3
+    RATING         F10.3
+    DIV            F10.3
+    TT             F10.3
+    R_NONR         F10.3
+    EMPL           F10.3
+    MED_INC        F10.3
+    HOME           F10.3
+    FD             F10.3
+    KIDS           F10.3
+    VEH_HH         F10.3
+    AGE_1          F10.3
+    AGE_2          F10.3
+    AGE_3          F10.3
+    AGE_4          F10.3
+    FEM            F10.3
+    WHITE          F10.3
+    ASIAN          F10.3
+    HISPANIC       F10.3
+    BLACK          F10.3
+    INC_1          F10.3
+    INC_2          F10.3
+    INC_3          F10.3
+    FULLTM         F10.3
+    PARTTM         F10.3
+    HOMEM          F10.3
+    CPROB1         F10.3
+    CPROB2         F10.3
+    CPROB3         F10.3
+    CPROB4         F10.3
+    C              F10.3
+
+  Save file format
+    35F10.3
+
+  Save file record length    10000
+
+  Save missing symbol        *
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for Mixture analysis.
+  No diagram output was produced.
+
+
+     Beginning Time:  15:12:36
+        Ending Time:  15:21:20
+       Elapsed Time:  00:08:44
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2024 Muthen & Muthen

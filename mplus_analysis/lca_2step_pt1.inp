@@ -1,0 +1,62 @@
+TITLE: Restaurant Preference Persona LPA
+
+DATA: FILE IS "H:\kng9\mlpus\weekend_analysis\lca_data.csv";
+
+! two step method
+VARIABLE: 
+    NAMES ARE id ff price rating div tt r_nonr mode purp tod
+    empl med_inc home fd kids veh_hh age_1 age_2 age_3 age_4 age_5
+    male fem gend_oth white asian hispanic black race_oth
+    inc_1 inc_2 inc_3 inc_4 fulltm parttm homem unemp;
+
+    USEVARIABLES ARE ff price rating div tt r_nonr mode purp tod;
+    AUXILIARY ARE empl med_inc home fd kids veh_hh
+    age_1 age_2 age_3 age_4
+    male fem
+    white asian hispanic black
+    inc_1 inc_2 inc_3 fulltm parttm homem;
+
+    CLASSES = c(3);
+    NOMINAL = mode purp tod;
+
+DEFINE:
+    empl = empl/1000;
+    med_inc = med_inc/1000;
+    tt = tt/10;
+
+ANALYSIS: TYPE = MIXTURE;
+    ESTIMATOR = MLR;
+    STARTS = 800 200;
+
+!MODEL:
+!    %OVERALL%
+!    ! covariates
+!    c ON empl med_inc home fd kids veh_hh
+!    age_1 age_2 age_3 age_4
+!    male fem
+!    white asian hispanic black
+!    inc_1 inc_2 inc_3 fulltm parttm homem;
+!    ! direct effect
+!    ff on white asian hispanic black;
+!    price on white asian hispanic black;
+!    rating on white asian hispanic black;
+!    r_nonr on inc_1 inc_2 inc_3; 
+!    mode on inc_1 inc_2 inc_3;
+!    ff on inc_1 inc_2 inc_3 ;
+!    price on inc_1 inc_2 inc_3 ;
+!    rating on inc_1 inc_2 inc_3 ;
+!    mode on kids;
+!    mode on veh_hh;
+!    ff on fd;
+!    price on fd;
+!    rating on fd;
+
+
+OUTPUT: svalues TECH11 !TECH14 !TECH1 TECH8 TECH11 TECH14;
+
+PLOT: TYPE = PLOT3;
+    SERIES = ff(1) price(2) rating(3) div(4) tt(5) r_nonr(6);
+
+SAVEDATA: FILE = 2step_pt2.dat;
+    SAVE = CPROB;
+
